@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cuestionario interactivo de Movimiento Rectilíneo Uniformemente Variado (MRUV) con respuestas justificadas e imágenes de referencia." />
+  <title>MRUV · Cuestionario interactivo</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <span class="badge">Física · Movimiento en una dimensión</span>
+      <h1>Cuestionario de <span>MRUV</span></h1>
+      <p class="hero__lead">
+        Movimiento Rectilíneo Uniformemente Variado: trayectoria recta y aceleración constante.
+        Responde las 12 preguntas, comprueba tus respuestas y lee la justificación de cada una.
+      </p>
+      <div class="hero__chips" aria-label="Temas del cuestionario">
+        <span class="chip">Ecuaciones cinemáticas</span>
+        <span class="chip">Gráficas v–t y x–t</span>
+        <span class="chip">Caída libre</span>
+        <span class="chip">Signos y sentidos</span>
+        <span class="chip">Resolutor paso a paso</span>
+      </div>
+      <a class="hero__cta" href="#cuestionario">Empezar cuestionario <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="hero__art" aria-hidden="true">
+      <svg viewBox="0 0 420 300" role="presentation">
+        <defs>
+          <linearGradient id="heroLine" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#38bdf8" />
+            <stop offset="1" stop-color="#6366f1" />
+          </linearGradient>
+        </defs>
+        <g stroke="#cbd5e1" stroke-width="1.5">
+          <line x1="46" y1="30" x2="46" y2="252" />
+          <line x1="46" y1="252" x2="392" y2="252" />
+          <line x1="46" y1="181" x2="392" y2="181" stroke-dasharray="4 6" />
+          <line x1="46" y1="110" x2="392" y2="110" stroke-dasharray="4 6" />
+          <line x1="46" y1="39" x2="392" y2="39" stroke-dasharray="4 6" />
+        </g>
+        <path d="M46 252 L370 46" stroke="url(#heroLine)" stroke-width="5" fill="none" stroke-linecap="round" />
+        <g fill="#4f46e5">
+          <circle cx="130" cy="196" r="5" />
+          <circle cx="214" cy="139" r="5" />
+          <circle cx="298" cy="83" r="5" />
+          <circle cx="370" cy="46" r="6" />
+        </g>
+        <text x="20" y="40" class="hero__svg-label">v</text>
+        <text x="380" y="275" class="hero__svg-label">t</text>
+      </svg>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================= TEORÍA ======================= -->
+    <section class="seccion" id="teoria">
+      <div class="seccion__cabecera">
+        <span class="eyebrow">Repaso rápido</span>
+        <h2>Las ideas clave</h2>
+        <p>En el MRUV la <strong>aceleración es constante</strong> distinta de cero. Eso permite usar tres ecuaciones y leer el movimiento en sus gráficas.</p>
+      </div>
+
+      <div class="formula-grid">
+        <article class="formula-card">
+          <h3>Velocidad</h3>
+          <p class="formula">v = v₀ + a·t</p>
+          <p>La velocidad cambia de forma lineal con el tiempo. Si <em>a</em> y <em>v₀</em> tienen distinto signo, el móvil primero disminuye su rapidez.</p>
+        </article>
+        <article class="formula-card">
+          <h3>Posición</h3>
+          <p class="formula">x = x₀ + v₀·t + ½·a·t²</p>
+          <p>El término cuadrático hace que la gráfica posición–tiempo sea una <strong>parábola</strong> (no una recta).</p>
+        </article>
+        <article class="formula-card">
+          <h3>Sin el tiempo</h3>
+          <p class="formula">v² = v₀² + 2·a·(x − x₀)</p>
+          <p>Útil cuando conoces velocidades y desplazamiento, pero no el intervalo de tiempo.</p>
+        </article>
+      </div>
+
+      <div class="graficas">
+        <figure class="grafica-card">
+          <svg viewBox="0 0 300 210" aria-label="Gráfica velocidad contra tiempo: línea recta ascendente">
+            <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
+            <line x1="38" y1="170" x2="268" y2="32" class="curva"/>
+            <g class="puntos"><circle cx="38" cy="170" r="4"/><circle cx="153" cy="101" r="4"/><circle cx="268" cy="32" r="4"/></g>
+            <text x="286" y="190" class="axis-text" text-anchor="end">t (s)</text>
+            <text x="14" y="24" class="axis-text">v (m/s)</text>
+          </svg>
+          <figcaption><strong>v vs t:</strong> una recta inclinada. Su pendiente es la <strong>aceleración</strong> y el área bajo la curva es el <strong>desplazamiento</strong>.</figcaption>
+        </figure>
+        <figure class="grafica-card">
+          <svg viewBox="0 0 300 210" aria-label="Gráfica posición contra tiempo: curva parabólica ascendente">
+            <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
+            <path d="M38 170 Q 100 166 150 122 T 268 32" class="curva" fill="none"/>
+            <g class="puntos"><circle cx="38" cy="170" r="4"/><circle cx="150" cy="122" r="4"/><circle cx="268" cy="32" r="4"/></g>
+            <text x="286" y="190" class="axis-text" text-anchor="end">t (s)</text>
+            <text x="14" y="24" class="axis-text">x (m)</text>
+          </svg>
+          <figcaption><strong>x vs t:</strong> una parábola. La pendiente de la tangente en cada punto es la <strong>velocidad instantánea</strong>.</figcaption>
+        </figure>
+        <figure class="grafica-card">
+          <svg viewBox="0 0 300 210" aria-label="Gráfica aceleración contra tiempo: línea horizontal constante">
+            <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
+            <line x1="38" y1="62" x2="268" y2="62" class="curva"/>
+            <text x="270" y="56" class="axis-text">a = cte.</text>
+            <text x="286" y="190" class="axis-text" text-anchor="end">t (s)</text>
+            <text x="14" y="24" class="axis-text">a (m/s²)</text>
+          </svg>
+          <figcaption><strong>a vs t:</strong> una recta horizontal. El área bajo esta curva equivale al <strong>cambio de velocidad</strong> Δv.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ======================= REFERENCIAS ======================= -->
+    <section class="seccion seccion--clara" id="referencias">
+      <div class="seccion__cabecera">
+        <span class="eyebrow">Imágenes de referencia</span>
+        <h2>Situaciones del MRUV</h2>
+        <p>Observa cómo cambia la separación entre posiciones sucesivas: en el MRUV los intervalos crecen (o decrecen) de forma regular porque la rapidez no es constante.</p>
+      </div>
+      <div class="imagenes-grid">
+        <figure class="imagen-card">
+          <img src="assets/mruv-auto.svg" alt="Ilustración de un automóvil acelerando hacia la derecha con posiciones fantasma cada vez más separadas" />
+          <figcaption>
+            <h3>Auto que acelera</h3>
+            <p>Si <em>a</em> tiene el mismo sentido que <em>v</em>, el vehículo gana rapidez: las marcas de posición se separan cada vez más.</p>
+          </figcaption>
+        </figure>
+        <figure class="imagen-card">
+          <img src="assets/mruv-caida.svg" alt="Ilustración de una pelota en caída libre con posiciones sucesivas cada vez más distantes" />
+          <figcaption>
+            <h3>Caída libre</h3>
+            <p>Con <em>a = −g ≈ −9,8 m/s²</em> (o −10 m/s² aproximado) y parte del reposo: <em>v = −g·t</em> y <em>y = y₀ − ½·g·t²</em>.</p>
+          </figcaption>
+        </figure>
+        <figure class="imagen-card">
+          <img src="assets/mruv-plano.svg" alt="Ilustración de un bloque deslizándose por un plano inclinado con aceleración constante" />
+          <figcaption>
+            <h3>Plano inclinado</h3>
+            <p>Sin rozamiento, la aceleración del bloque es constante e igual a <em>g·sen(θ)</em>: otro caso típico de MRUV.</p>
+          </figcaption>
+        </figure>
+      </div>
+      <aside class="nota">
+        <strong>Convención de signos:</strong> elige una dirección positiva y mantenla en todo el problema. Velocidad negativa no significa “ir más lento”, sino “moverse en sentido negativo”.
+      </aside>
+    </section>
+
+    <!-- ======================= LABORATORIO ======================= -->
+    <section class="seccion seccion--lab" id="laboratorio">
+      <div class="seccion__cabecera">
+        <span class="eyebrow">Resolutor paso a paso</span>
+        <h2>Laboratorio de ejercicios</h2>
+        <p>Ingresa los valores del problema. La imagen se dibuja con tus datos y el resolutor muestra cada fórmula ya sustituida, el resultado y su interpretación física.</p>
+      </div>
+
+      <div class="lab">
+        <form class="lab__panel" id="labForm" novalidate>
+          <div class="segmented" role="tablist" aria-label="Tipo de ejercicio">
+            <button type="button" class="segmented__btn activo" data-modo="vertical" role="tab" aria-selected="true">Caída / lanzamiento vertical</button>
+            <button type="button" class="segmented__btn" data-modo="horizontal" role="tab" aria-selected="false">Auto con aceleración</button>
+          </div>
+
+          <p class="lab__descripcion" id="labDescripcion"></p>
+          <div class="campos" id="labCampos"></div>
+
+          <div class="lab__botones">
+            <button type="submit" class="btn btn--primary">Calcular resultado →</button>
+            <button type="button" class="btn btn--ghost" id="labReset">Restablecer</button>
+          </div>
+          <p class="lab__error" id="labError" role="alert" hidden></p>
+        </form>
+
+        <div class="lab__salida" id="labSalida" aria-live="polite">
+          <div class="lab__placeholder">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6 7"/>
+              <path d="M38 62 L54 78 L84 44" fill="none" stroke="#4f46e5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Tus resultados aparecerán aquí</h3>
+            <p>Completa los datos a la izquierda y pulsa <strong>Calcular resultado</strong> para ver el esquema, las fórmulas y la explicación paso a paso.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= CUESTIONARIO ======================= -->
+    <section class="seccion" id="cuestionario">
+      <div class="seccion__cabecera">
+        <span class="eyebrow">Pon a prueba lo aprendido</span>
+        <h2>Cuestionario</h2>
+        <p>Selecciona una opción y pulsa <strong>Comprobar</strong>. Verás al instante si es correcta y la justificación física.</p>
+      </div>
+
+      <div class="quiz" id="quiz">
+        <div class="quiz__barra">
+          <div class="quiz__progreso-texto">
+            <span id="contador">Pregunta 1 de 12</span>
+            <span id="puntuacion">Aciertos: 0</span>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Progreso del cuestionario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+            <div class="progress__fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div id="preguntaContainer" aria-live="polite"></div>
+
+        <div class="quiz__acciones" id="acciones">
+          <button type="button" class="btn btn--ghost" id="btnAnterior" disabled>← Anterior</button>
+          <div class="acciones__derecha">
+            <button type="button" class="btn btn--primary" id="btnComprobar" disabled>Comprobar</button>
+            <button type="button" class="btn btn--primary" id="btnSiguiente" hidden>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="resultado" id="resultado" hidden></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>MRUV · Cuestionario educativo con respuestas justificadas. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

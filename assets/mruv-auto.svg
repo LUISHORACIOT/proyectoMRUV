@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Automóvil acelerando hacia la derecha con posiciones sucesivas cada vez más separadas">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="asfalto" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#475569"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+    <marker id="punta" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#059669"/>
+    </marker>
+    <g id="auto">
+      <path d="M8 56 L16 33 Q20 25 30 25 H70 L91 11 H119 Q130 11 134 21 L142 35 Q151 37 151 47 V56 Z" fill="#ef4444"/>
+      <path d="M74 25 L92 14 H117 Q123 14 126 21 L131 25 Z" fill="#bae6fd"/>
+      <path d="M38 25 H68 L83 14 H44 Z" fill="#bae6fd"/>
+      <rect x="8" y="48" width="143" height="6" rx="3" fill="#b91c1c"/>
+      <rect x="140" y="37" width="10" height="7" rx="2" fill="#fde68a"/>
+      <circle cx="41" cy="56" r="13" fill="#0f172a"/>
+      <circle cx="41" cy="56" r="6" fill="#cbd5e1"/>
+      <circle cx="119" cy="56" r="13" fill="#0f172a"/>
+      <circle cx="119" cy="56" r="6" fill="#cbd5e1"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#cielo)"/>
+  <circle cx="690" cy="85" r="42" fill="#fde68a" opacity=".75"/>
+  <path d="M0 250 Q140 210 280 245 T560 235 T800 250 V360 H0 Z" fill="#dbeafe" opacity=".6"/>
+
+  <rect x="0" y="360" width="800" height="140" fill="url(#asfalto)"/>
+  <rect x="0" y="360" width="800" height="5" fill="#94a3b8"/>
+  <g stroke="#e2e8f0" stroke-width="5" stroke-dasharray="34 26" opacity=".85">
+    <line x1="0" y1="435" x2="800" y2="435"/>
+  </g>
+
+  <use href="#auto" x="36" y="300" opacity=".16"/>
+  <use href="#auto" x="92" y="300" opacity=".28"/>
+  <use href="#auto" x="164" y="300" opacity=".45"/>
+  <use href="#auto" x="256" y="300" opacity=".7"/>
+  <use href="#auto" x="382" y="300"/>
+
+  <g fill="#475569" font-family="system-ui, sans-serif" font-size="15">
+    <text x="70" y="398" opacity=".55">t₀</text>
+    <text x="126" y="398" opacity=".6">t₁</text>
+    <text x="198" y="398" opacity=".7">t₂</text>
+    <text x="290" y="398" opacity=".8">t₃</text>
+    <text x="416" y="398">t₄</text>
+  </g>
+
+  <line x1="590" y1="185" x2="730" y2="185" stroke="#059669" stroke-width="6" stroke-linecap="round" marker-end="url(#punta)"/>
+  <text x="590" y="165" fill="#065f46" font-family="Georgia, serif" font-style="italic" font-size="30">a &gt; 0</text>
+  <text x="600" y="222" fill="#475569" font-family="system-ui, sans-serif" font-size="16">rapidez creciente →</text>
+</svg>

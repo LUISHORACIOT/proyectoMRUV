@@ -1,0 +1,10 @@
+{
+  "name": "cuestionario-mruv",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cuestionario interactivo de MRUV con respuestas justificadas e imágenes de referencia",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}

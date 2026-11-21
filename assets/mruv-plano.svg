@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Bloque deslizándose por un plano inclinado con aceleración constante a lo largo de la pendiente">
+  <defs>
+    <linearGradient id="fondo2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef2ff"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <marker id="punta2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7c3aed"/>
+    </marker>
+    <g id="bloque">
+      <rect x="-30" y="-36" width="60" height="36" rx="5" fill="#f59e0b"/>
+      <rect x="-30" y="-36" width="60" height="9" rx="4" fill="#fbbf24"/>
+      <line x1="-16" y1="-27" x2="16" y2="-27" stroke="#d97706" stroke-width="2"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fondo2)"/>
+
+  <path d="M70 410 L640 118 L640 410 Z" fill="#e2e8f0"/>
+  <path d="M70 410 L640 118" stroke="#64748b" stroke-width="7" stroke-linecap="round"/>
+  <line x1="70" y1="410" x2="700" y2="410" stroke="#94a3b8" stroke-width="5"/>
+
+  <g opacity=".22"><use href="#bloque" transform="translate(145 370) rotate(-27.4)"/></g>
+  <g opacity=".35"><use href="#bloque" transform="translate(236 321) rotate(-27.4)"/></g>
+  <g opacity=".55"><use href="#bloque" transform="translate(345 263) rotate(-27.4)"/></g>
+  <use href="#bloque" transform="translate(474 198) rotate(-27.4)"/>
+
+  <line x1="505" y1="146" x2="625" y2="81" stroke="#7c3aed" stroke-width="6" stroke-linecap="round" marker-end="url(#punta2)"/>
+  <text x="520" y="122" fill="#5b21b6" font-family="Georgia, serif" font-style="italic" font-size="26">a = g·sen θ</text>
+
+  <path d="M70 410 A 70 70 0 0 1 120 383" fill="none" stroke="#94a3b8" stroke-width="2"/>
+  <text x="112" y="398" fill="#64748b" font-family="Georgia, serif" font-style="italic" font-size="20">θ</text>
+
+  <g fill="#64748b" font-family="system-ui, sans-serif" font-size="15">
+    <text x="120" y="465">Las posiciones se separan cada vez más: la rapidez aumenta de forma uniforme.</text>
+  </g>
+</svg>
