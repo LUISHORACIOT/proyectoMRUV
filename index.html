@@ -23,6 +23,7 @@
         <span class="chip">Caída libre</span>
         <span class="chip">Signos y sentidos</span>
         <span class="chip">Resolutor paso a paso</span>
+        <span class="chip">Investigación guiada</span>
         <span class="chip">Consulta por voz</span>
       </div>
       <a class="hero__cta" href="#cuestionario">Empezar cuestionario <span aria-hidden="true">↓</span></a>
@@ -54,6 +55,17 @@
       </svg>
     </div>
   </header>
+
+  <!-- ======================= PESTAÑAS ======================= -->
+  <nav class="tabs" id="tabs" aria-label="Secciones del sitio">
+    <div class="tabs__inner">
+      <a class="tabs__link activo" href="#teoria">Teoría</a>
+      <a class="tabs__link" href="#referencias">Situaciones</a>
+      <a class="tabs__link" href="#laboratorio">Laboratorio</a>
+      <a class="tabs__link" href="#investigacion">Investigación <span class="tabs__badge">Nuevo</span></a>
+      <a class="tabs__link" href="#cuestionario">Cuestionario</a>
+    </div>
+  </nav>
 
   <main>
     <!-- ======================= TEORÍA ======================= -->
@@ -189,6 +201,40 @@
       </div>
     </section>
 
+    <!-- ======================= INVESTIGACIÓN ======================= -->
+    <section class="seccion seccion--investiga" id="investigacion">
+      <div class="seccion__cabecera">
+        <span class="eyebrow">Aprende a tu ritmo</span>
+        <h2>Investiga un tema</h2>
+        <p>
+          Elige un tema del catálogo. Verás su <strong>concepto</strong>, sus <strong>fórmulas</strong> y
+          <strong>casos reales</strong>. Puedes cambiar los valores o reescribir la fórmula y la gráfica se
+          actualiza al instante.
+        </p>
+      </div>
+
+      <div class="investiga">
+        <aside class="catalogo" aria-label="Catálogo de temas para investigar">
+          <div class="catalogo__buscador">
+            <label for="invBuscar">Buscar tema</label>
+            <div class="catalogo__input">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M16 16l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <input id="invBuscar" type="search" placeholder="Ej.: caída libre, Ohm, ondas…" autocomplete="off" />
+            </div>
+          </div>
+          <div class="catalogo__filtros" id="invFiltros" aria-label="Filtrar por categoría"></div>
+          <div class="catalogo__lista" id="invLista"></div>
+          <p class="catalogo__vacio" id="invVacio" hidden>No hay temas que coincidan. Prueba con otra palabra.</p>
+          <p class="catalogo__pie">22 temas de física y matemáticas · elige uno para empezar</p>
+        </aside>
+
+        <div class="investiga__contenido" id="invContenido" aria-live="polite"></div>
+      </div>
+    </section>
+
     <!-- ======================= CUESTIONARIO ======================= -->
     <section class="seccion" id="cuestionario">
       <div class="seccion__cabecera">
@@ -258,6 +304,7 @@
       <button type="button" data-chat="¿Qué fórmula uso?">¿Qué fórmula uso?</button>
       <button type="button" data-chat="Explica este ejercicio">Explica este ejercicio</button>
       <button type="button" data-chat="Explica mi laboratorio">Explica mi laboratorio</button>
+      <button type="button" data-chat="Explícame el tema que estoy investigando">Explícame el tema que investigo</button>
       <button type="button" data-chat="¿Por qué en el punto más alto no es cero la aceleración?">¿Aceleración en el punto más alto?</button>
       <button type="button" data-chat="¿Por qué no funciona el micrófono?">El micrófono no funciona</button>
     </div>
@@ -283,6 +330,8 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="investigacion-temas.js"></script>
+  <script src="investigacion.js"></script>
   <script src="chatbot.js"></script>
 </body>
 </html>

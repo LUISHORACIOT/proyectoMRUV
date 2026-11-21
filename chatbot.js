@@ -431,6 +431,38 @@
     return base + extra;
   }
 
+  function respuestaInvestigacion() {
+    const api = window.MRUV_INVESTIGA;
+    if (!api || !api.tema) {
+      return "<p>Abre la pestaña <strong>Investigación</strong>, elige un tema y vuelve a preguntarme. Te explicaré su concepto, su fórmula y sus casos.</p>";
+    }
+
+    const tema = api.tema;
+    const formula = api.formula;
+    const estado = api.estado;
+    const concepto = textoPlano(tema.concepto);
+    const resumenConcepto = concepto.length > 460 ? concepto.slice(0, 460).trim() + "…" : concepto;
+
+    let bloqueFormula = "";
+    if (formula) {
+      const expresion = estado && estado.expr ? estado.expr : formula.expr;
+      bloqueFormula = `<p><strong>Fórmula:</strong> <code>${expresion}</code></p>`;
+      if (estado) {
+        const valores = formula.parametros
+          .map(p => `${p.simbolo} = ${f(estado.params[p.id])}`)
+          .join(" · ");
+        if (valores) bloqueFormula += `<p><strong>Valores actuales:</strong> ${valores}</p>`;
+      }
+    }
+
+    return `<p><strong>Tema:</strong> ${tema.titulo} <em>(${tema.categoria})</em></p>` +
+      `<p>${tema.resumen}</p>` +
+      `<p><strong>Concepto:</strong> ${resumenConcepto}</p>` +
+      bloqueFormula +
+      `<p><strong>Casos para investigar:</strong> ${tema.casos.map(c => c.titulo).join(" · ")}.</p>` +
+      "<p>En la pestaña Investigación puedes mover los parámetros o reescribir la fórmula y ver la gráfica al instante.</p>";
+  }
+
   function respuestaCambiar(ctx) {
     const api = window.MRUV_LAB;
     if (!api || !api.recalcular) return "<p>No puedo modificar los datos ahora mismo. Usa el panel del laboratorio.</p>";
@@ -489,6 +521,7 @@
       respuesta: respuestaCambiar
     },
     { patrones: [/\b(por que no|descartar|descarta|opcion|no es la [a-d])\b/], respuesta: respuestaDescartar },
+    { patrones: [/\b(tema que (estoy )?investig|investigacion|investigando|concepto actual|explica el tema)\b/], respuesta: respuestaInvestigacion },
     { patrones: [/\b(ejercicio|pregunta|respuesta correcta|explica este|ayudame con este|no entiendo)\b/], respuesta: respuestaEjercicio },
     { patrones: [/\b(paso a paso|pasos|como llegaste|desarrolla)\b/], respuesta: () => respuestaLab(true) },
     { patrones: [/\b(laboratorio|calculadora|mi resultado|resultado|explica mi|datos del lab)\b/], respuesta: () => respuestaLab(false) },
