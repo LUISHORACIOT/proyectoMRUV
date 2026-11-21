@@ -222,10 +222,48 @@
     </section>
   </main>
 
+  <!-- ======================= TUTOR CHAT ======================= -->
+  <button type="button" class="chat-toggle" id="chatToggle" aria-label="Abrir tutor de física" aria-expanded="false" aria-controls="chatPanel">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" fill="currentColor"/>
+      <path d="M7 9h10M7 13h7" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="chat-toggle__badge" aria-hidden="true">?</span>
+  </button>
+
+  <section class="chat" id="chatPanel" aria-label="Tutor de MRUV" hidden>
+    <header class="chat__header">
+      <div class="chat__avatar" aria-hidden="true">ƒ</div>
+      <div class="chat__titulo">
+        <h2>Tutor de MRUV</h2>
+        <p>Tutor local · usa tus datos</p>
+      </div>
+      <button type="button" class="chat__cerrar" id="chatCerrar" aria-label="Cerrar chat">×</button>
+    </header>
+
+    <div class="chat__mensajes" id="chatMensajes" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+    <div class="chat__sugerencias" id="chatSugerencias" aria-label="Preguntas sugeridas">
+      <button type="button" data-chat="¿Qué fórmula uso?">¿Qué fórmula uso?</button>
+      <button type="button" data-chat="Explica este ejercicio">Explica este ejercicio</button>
+      <button type="button" data-chat="Explica mi laboratorio">Explica mi laboratorio</button>
+      <button type="button" data-chat="¿Por qué en el punto más alto no es cero la aceleración?">¿Aceleración en el punto más alto?</button>
+    </div>
+
+    <form class="chat__form" id="chatForm">
+      <label class="sr-only" for="chatInput">Escribe tu pregunta sobre MRUV</label>
+      <input id="chatInput" type="text" placeholder="Escribe tu duda…" autocomplete="off" spellcheck="true" />
+      <button type="submit" aria-label="Enviar mensaje">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z" fill="currentColor"/></svg>
+      </button>
+    </form>
+  </section>
+
   <footer>
-    <p>MRUV · Cuestionario educativo con respuestas justificadas. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar.</p>
+    <p>MRUV · Cuestionario educativo con respuestas justificadas. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar. El tutor está abajo a la derecha.</p>
   </footer>
 
   <script src="script.js"></script>
+  <script src="chatbot.js"></script>
 </body>
 </html>

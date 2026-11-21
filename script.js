@@ -380,6 +380,7 @@ renderPregunta();
   };
 
   let modo = "vertical";
+  let ultimoResultado = null;
 
   const form = document.getElementById("labForm");
   const camposEl = document.getElementById("labCampos");
@@ -418,6 +419,7 @@ renderPregunta();
 
   function cambiarModo(nuevo) {
     modo = nuevo;
+    ultimoResultado = null;
     botonesModo.forEach(btn => {
       const activo = btn.dataset.modo === modo;
       btn.classList.toggle("activo", activo);
@@ -429,6 +431,7 @@ renderPregunta();
 
   botonesModo.forEach(btn => btn.addEventListener("click", () => cambiarModo(btn.dataset.modo)));
   document.getElementById("labReset").addEventListener("click", () => {
+    ultimoResultado = null;
     renderCampos();
     salidaEl.innerHTML = placeholderHTML;
   });
@@ -654,6 +657,7 @@ renderPregunta();
 
       if (modo === "vertical") {
         const r = calcularVertical(datos);
+        ultimoResultado = { modo: "vertical", ...r };
         mostrar(
           imagenVertical(r),
           `Esquema dibujado con y₀ = ${fmt(r.altura)} m, v₀ = ${fmt(r.v0)} m/s y g = ${fmt(r.g)} m/s². Las marcas naranjas son posiciones en intervalos iguales de tiempo.`,
@@ -665,6 +669,7 @@ renderPregunta();
         );
       } else {
         const r = calcularHorizontal(datos);
+        ultimoResultado = { modo: "horizontal", ...r };
         mostrar(
           imagenHorizontal(r),
           `Esquema dibujado con x₀ = ${fmt(r.x0)} m, v₀ = ${fmt(r.v0)} m/s y a = ${fmt(r.a)} m/s². Las posiciones se muestran en intervalos iguales de tiempo.`,
@@ -682,5 +687,27 @@ renderPregunta();
     }
   });
 
+  /* API de contexto para el tutor conversacional */
+  window.MRUV_LAB = {
+    get modo() { return modo; },
+    get datos() {
+      try { return leerDatos(); } catch { return null; }
+    },
+    get resultado() { return ultimoResultado; },
+    recalcular() {
+      if (typeof form.requestSubmit === "function") form.requestSubmit();
+      else form.dispatchEvent(new Event("submit", { cancelable: true }));
+    }
+  };
+
   renderCampos();
 })();
+
+/* API de contexto del cuestionario para el tutor */
+window.MRUV_QUIZ = {
+  indiceActual: () => indice,
+  preguntaActual: () => preguntas[indice],
+  respuestaElegida: () => respuestas[indice],
+  respuestaCorrecta: () => preguntas[indice].correcta,
+  aciertos
+};
