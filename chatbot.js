@@ -91,11 +91,42 @@
     }
   }
 
+  function mostrarAvisoVoz(texto) {
+    setEstadoVoz(texto);
+    agregarMensaje(`<p>🎤 ${texto}</p>`, "bot");
+  }
+
+  function mensajePermiso(error) {
+    const nombre = error && error.name ? error.name : "";
+    if (nombre === "NotAllowedError" || nombre === "PermissionDeniedError") {
+      return "Permiso denegado. Haz clic en el ícono de candado junto a la URL → Micrófono → Permitir y vuelve a pulsar el botón.";
+    }
+    if (nombre === "NotFoundError" || nombre === "DevicesNotFoundError") {
+      return "No detecté ningún micrófono. Conecta uno o verifica que no esté desactivado en Windows.";
+    }
+    if (nombre === "NotReadableError" || nombre === "TrackStartError") {
+      return "El micrófono está ocupado o no se puede leer. Cierra otras aplicaciones que lo estén usando.";
+    }
+    return "No pude acceder al micrófono. Revisa los permisos del sitio y vuelve a intentarlo.";
+  }
+
+  function iniciarReconocimiento() {
+    setEstadoVoz("Preparando micrófono…");
+    try {
+      reconocimiento.start();
+    } catch (error) {
+      mostrarAvisoVoz("No se pudo iniciar el micrófono. " + ((error && error.message) || "Vuelve a intentarlo."));
+    }
+  }
+
   function configurarMic() {
     if (!mic) return;
+
     if (!Reconocimiento) {
-      mic.disabled = true;
-      mic.title = "El reconocimiento de voz no está disponible en este navegador";
+      mic.title = "Reconocimiento de voz no disponible en este navegador";
+      mic.addEventListener("click", () => {
+        mostrarAvisoVoz("Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge, o escribe tu pregunta en el campo de texto.");
+      });
       return;
     }
 
@@ -123,13 +154,14 @@
     reconocimiento.onerror = (evento) => {
       huboErrorVoz = true;
       const mensajes = {
-        "not-allowed": "Permite el micrófono para preguntar por voz.",
-        "service-not-allowed": "El navegador bloqueó el servicio de voz.",
-        "no-speech": "No escuché nada. Intenta de nuevo.",
-        "audio-capture": "No encontré un micrófono disponible.",
-        "network": "Error de red al usar el reconocimiento de voz."
+        "not-allowed": "Permiso denegado. Haz clic en el candado junto a la URL → Micrófono → Permitir y vuelve a pulsar.",
+        "service-not-allowed": "El navegador bloqueó el servicio de voz. Revisa los permisos del sitio.",
+        "no-speech": "No escuché nada. Acércate al micrófono y vuelve a pulsar el botón.",
+        "audio-capture": "No encontré un micrófono disponible. Conecta uno y vuelve a intentarlo.",
+        "network": "El reconocimiento de voz necesita conexión a internet en Chrome/Edge. Si estás sin red, escribe la pregunta.",
+        "aborted": "Se canceló la escucha. Puedes volver a intentarlo."
       };
-      setEstadoVoz(mensajes[evento.error] || "No pude entender el audio. Intenta de nuevo.");
+      mostrarAvisoVoz(mensajes[evento.error] || "No pude entender el audio. Intenta de nuevo.");
     };
 
     reconocimiento.onend = () => {
@@ -139,17 +171,26 @@
     };
 
     mic.addEventListener("click", () => {
-      if (!reconocimiento) return;
       if (escuchando) {
         reconocimiento.stop();
         return;
       }
-      setEstadoVoz("Preparando micrófono…");
-      try {
-        reconocimiento.start();
-      } catch {
-        setEstadoVoz("No se pudo iniciar el micrófono.");
+
+      const mediaDevices = (typeof navigator !== "undefined" && navigator.mediaDevices) || null;
+      if (!mediaDevices || typeof mediaDevices.getUserMedia !== "function") {
+        iniciarReconocimiento();
+        return;
       }
+
+      setEstadoVoz("Solicitando permiso al micrófono…");
+      mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          if (stream && typeof stream.getTracks === "function") {
+            stream.getTracks().forEach(pista => pista.stop());
+          }
+          iniciarReconocimiento();
+        })
+        .catch(error => mostrarAvisoVoz(mensajePermiso(error)));
     });
   }
 
@@ -420,6 +461,15 @@
     return `<p>Listo, actualicé ${cambios.join(", ")} y recalculé.</p>` + respuestaLab(false).replace(/^<p>Con/, "<p>Resultado:</p><p>Con");
   }
 
+  const respuestaMicrofono = () =>
+    "<p>Si el micrófono no se activa, revisa estos puntos:</p><ol>" +
+    "<li><strong>Permiso:</strong> clic en el ícono de candado junto a la URL → <em>Micrófono → Permitir</em> → recarga la página.</li>" +
+    "<li><strong>Navegador:</strong> usa <strong>Chrome o Edge</strong>. Firefox y Safari no siempre soportan reconocimiento de voz.</li>" +
+    "<li><strong>Conexión:</strong> estás en <code>localhost</code> con <code>npm run dev</code>, pero Chrome necesita internet para transcribir el audio.</li>" +
+    "<li><strong>Dispositivo:</strong> verifica que el micrófono esté conectado, no silenciado y que otra app no lo esté usando.</li>" +
+    "<li><strong>Alternativa:</strong> puedes seguir escribiendo tu duda; el tutor responde igual.</li></ol>" +
+    "<p>Después vuelve a pulsar el botón del micrófono.</p>";
+
   const respuestaFallback = () =>
     "<p>No encontré esa palabra clave, pero puedo ayudarte con casi todo el tema. Prueba una de estas preguntas:</p><ul>" +
     "<li>¿Qué fórmula uso si no tengo el tiempo?</li>" +
@@ -433,6 +483,7 @@
     { patrones: [/\b(hola|buenas|hey|buen dia)\b/], respuesta: respuestaSaludo },
     { patrones: [/\b(gracias|adios|hasta luego|bye)\b/], respuesta: respuestaDespedida },
     { patrones: [/\b(ayuda|help|que puedes hacer|comandos|opciones)\b/], respuesta: respuestaAyuda },
+    { patrones: [/\b(microfono|mic|audio|no me escucha|voz no funciona|permiso)\b/], respuesta: respuestaMicrofono },
     {
       patrones: [/(?=.*\b(pon|cambia|cambiar|usa|establece|modifica|ajusta)\b)(?=.*\b(altura|velocidad|tiempo|gravedad|aceleracion|posicion|v0|y0|x0)\b)/],
       respuesta: respuestaCambiar
