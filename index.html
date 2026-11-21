@@ -23,6 +23,7 @@
         <span class="chip">Caída libre</span>
         <span class="chip">Signos y sentidos</span>
         <span class="chip">Resolutor paso a paso</span>
+        <span class="chip">Consulta por voz</span>
       </div>
       <a class="hero__cta" href="#cuestionario">Empezar cuestionario <span aria-hidden="true">↓</span></a>
     </div>
@@ -238,6 +239,16 @@
         <h2>Tutor de MRUV</h2>
         <p>Tutor local · usa tus datos</p>
       </div>
+      <button type="button" class="chat__voz" id="chatVoz" aria-label="Desactivar respuestas por voz" aria-pressed="true" title="Desactivar respuestas por voz">
+        <svg class="svg-on" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+          <path d="M16 8a5 5 0 0 1 0 8M18.5 5.5a8.5 8.5 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="svg-off" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+          <path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
       <button type="button" class="chat__cerrar" id="chatCerrar" aria-label="Cerrar chat">×</button>
     </header>
 
@@ -251,16 +262,23 @@
     </div>
 
     <form class="chat__form" id="chatForm">
+      <button type="button" class="chat__mic" id="chatMic" aria-label="Preguntar por voz" title="Preguntar por voz">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z" fill="currentColor"/>
+          <path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
       <label class="sr-only" for="chatInput">Escribe tu pregunta sobre MRUV</label>
-      <input id="chatInput" type="text" placeholder="Escribe tu duda…" autocomplete="off" spellcheck="true" />
+      <input id="chatInput" type="text" placeholder="Escribe o pulsa el micrófono…" autocomplete="off" spellcheck="true" />
       <button type="submit" aria-label="Enviar mensaje">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z" fill="currentColor"/></svg>
       </button>
     </form>
+    <p class="chat__estado-voz" id="chatEstadoVoz" role="status" aria-live="polite" hidden></p>
   </section>
 
   <footer>
-    <p>MRUV · Cuestionario educativo con respuestas justificadas. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar. El tutor está abajo a la derecha.</p>
+    <p>MRUV · Cuestionario educativo con respuestas justificadas. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar. El tutor está abajo a la derecha: puedes escribirle o preguntarle por voz con el micrófono.</p>
   </footer>
 
   <script src="script.js"></script>

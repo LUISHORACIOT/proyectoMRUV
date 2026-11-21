@@ -10,7 +10,148 @@
   const form = document.getElementById("chatForm");
   const input = document.getElementById("chatInput");
   const sugerencias = document.getElementById("chatSugerencias");
+  const mic = document.getElementById("chatMic");
+  const botonVoz = document.getElementById("chatVoz");
+  const estadoVoz = document.getElementById("chatEstadoVoz");
   const letras = ["A", "B", "C", "D"];
+
+  /* ---------- Voz: reconocimiento + síntesis (Web Speech API) ---------- */
+  const Reconocimiento = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const sintesis = window.speechSynthesis || null;
+  let reconocimiento = null;
+  let escuchando = false;
+  let huboErrorVoz = false;
+  let vozActiva = true;
+  let vozDesbloqueada = false;
+  let ultimoHtml = "";
+
+  function idiomaVoz() {
+    const lang = (typeof navigator !== "undefined" && navigator.language) || "es-ES";
+    return lang.toLowerCase().startsWith("es") ? lang : "es-ES";
+  }
+
+  function setEstadoVoz(texto) {
+    if (!estadoVoz) return;
+    estadoVoz.textContent = texto || "";
+    estadoVoz.hidden = !texto;
+  }
+
+  function textoPlano(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html || "";
+    return (div.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  function elegirVoz() {
+    if (!sintesis || typeof sintesis.getVoices !== "function") return null;
+    const voces = sintesis.getVoices() || [];
+    const lang = idiomaVoz().toLowerCase();
+    return voces.find(v => v.lang.toLowerCase() === lang)
+      || voces.find(v => v.lang.toLowerCase().startsWith("es"))
+      || null;
+  }
+
+  function desbloquearVoz() {
+    if (!sintesis || vozDesbloqueada) return;
+    try { sintesis.resume(); } catch { /* algunos navegadores no lo requieren */ }
+    vozDesbloqueada = true;
+  }
+
+  function hablar(html) {
+    if (!sintesis || !vozActiva) return;
+    const Utterance = window.SpeechSynthesisUtterance;
+    if (!Utterance) return;
+    const texto = textoPlano(html || ultimoHtml);
+    if (!texto) return;
+    desbloquearVoz();
+    try {
+      sintesis.cancel();
+      const enunciado = new Utterance(texto);
+      enunciado.lang = idiomaVoz();
+      enunciado.rate = 1;
+      enunciado.pitch = 1;
+      enunciado.volume = 1;
+      const voz = elegirVoz();
+      if (voz) enunciado.voice = voz;
+      sintesis.speak(enunciado);
+    } catch {
+      setEstadoVoz("No se pudo reproducir la voz en este navegador.");
+    }
+  }
+
+  function actualizarBotonVoz() {
+    if (!botonVoz) return;
+    const titulo = vozActiva ? "Desactivar respuestas por voz" : "Activar respuestas por voz";
+    botonVoz.setAttribute("aria-pressed", String(vozActiva));
+    botonVoz.setAttribute("aria-label", titulo);
+    botonVoz.title = titulo;
+    if (!sintesis) {
+      botonVoz.disabled = true;
+      botonVoz.title = "La síntesis de voz no está disponible en este navegador";
+    }
+  }
+
+  function configurarMic() {
+    if (!mic) return;
+    if (!Reconocimiento) {
+      mic.disabled = true;
+      mic.title = "El reconocimiento de voz no está disponible en este navegador";
+      return;
+    }
+
+    reconocimiento = new Reconocimiento();
+    reconocimiento.lang = idiomaVoz();
+    reconocimiento.continuous = false;
+    reconocimiento.interimResults = false;
+    reconocimiento.maxAlternatives = 1;
+
+    reconocimiento.onstart = () => {
+      escuchando = true;
+      huboErrorVoz = false;
+      mic.classList.add("escuchando");
+      setEstadoVoz("Escuchando… habla ahora");
+    };
+
+    reconocimiento.onresult = (evento) => {
+      const texto = (evento.results[0][0].transcript || "").trim();
+      if (texto) {
+        input.value = texto;
+        enviar(texto);
+      }
+    };
+
+    reconocimiento.onerror = (evento) => {
+      huboErrorVoz = true;
+      const mensajes = {
+        "not-allowed": "Permite el micrófono para preguntar por voz.",
+        "service-not-allowed": "El navegador bloqueó el servicio de voz.",
+        "no-speech": "No escuché nada. Intenta de nuevo.",
+        "audio-capture": "No encontré un micrófono disponible.",
+        "network": "Error de red al usar el reconocimiento de voz."
+      };
+      setEstadoVoz(mensajes[evento.error] || "No pude entender el audio. Intenta de nuevo.");
+    };
+
+    reconocimiento.onend = () => {
+      escuchando = false;
+      mic.classList.remove("escuchando");
+      if (!huboErrorVoz) setTimeout(() => { if (!escuchando) setEstadoVoz(""); }, 1200);
+    };
+
+    mic.addEventListener("click", () => {
+      if (!reconocimiento) return;
+      if (escuchando) {
+        reconocimiento.stop();
+        return;
+      }
+      setEstadoVoz("Preparando micrófono…");
+      try {
+        reconocimiento.start();
+      } catch {
+        setEstadoVoz("No se pudo iniciar el micrófono.");
+      }
+    });
+  }
 
   /* ---------- Utilidades ---------- */
   function f(x) {
@@ -33,8 +174,13 @@
   function agregarMensaje(html, tipo) {
     const div = document.createElement("div");
     div.className = `mensaje mensaje--${tipo}`;
-    if (tipo === "bot") div.innerHTML = html;
-    else div.textContent = html;
+    if (tipo === "bot") {
+      div.innerHTML = html;
+      div.title = "Clic para escuchar de nuevo";
+      div.addEventListener("click", () => { ultimoHtml = html; hablar(html); });
+    } else {
+      div.textContent = html;
+    }
     mensajes.appendChild(div);
     mensajes.scrollTop = mensajes.scrollHeight;
     return div;
@@ -68,6 +214,7 @@
 
   function enviar(texto) {
     if (panel.hidden) abrir();
+    desbloquearVoz();
     agregarMensaje(texto, "user");
     const espera = document.createElement("div");
     espera.className = "mensaje mensaje--bot chat__typing";
@@ -77,7 +224,10 @@
 
     setTimeout(() => {
       espera.remove();
-      agregarMensaje(generarRespuesta(texto), "bot");
+      const respuesta = generarRespuesta(texto);
+      ultimoHtml = respuesta;
+      agregarMensaje(respuesta, "bot");
+      hablar(respuesta);
     }, 380);
   }
 
@@ -318,6 +468,24 @@
   }
 
   /* ---------- Arranque ---------- */
-  window.MRUBOT = { generarRespuesta, norm, f };
-  agregarMensaje("<p>¡Hola! Soy tu tutor de MRUV 👋</p><p>Puedo explicarte la pregunta que estés viendo, tus resultados del laboratorio o cualquier duda del tema. Escribe tu pregunta abajo.</p>", "bot");
+  if (botonVoz) {
+    botonVoz.addEventListener("click", () => {
+      vozActiva = !vozActiva;
+      actualizarBotonVoz();
+      if (vozActiva) {
+        desbloquearVoz();
+        hablar("<p>Voz activada.</p>");
+      } else if (sintesis) {
+        sintesis.cancel();
+        setEstadoVoz("Respuestas por voz desactivadas.");
+        setTimeout(() => setEstadoVoz(""), 2000);
+      }
+    });
+  }
+
+  actualizarBotonVoz();
+  configurarMic();
+
+  window.MRUBOT = { generarRespuesta, norm, f, hablar };
+  agregarMensaje("<p>¡Hola! Soy tu tutor de MRUV 👋</p><p>Puedo explicarte la pregunta que estés viendo, tus resultados del laboratorio o cualquier duda del tema. Escribe tu pregunta o pulsa el micrófono para hablar.</p>", "bot");
 })();
