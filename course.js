@@ -272,7 +272,32 @@
   const nav = document.getElementById("courseNav");
   const lesson = document.getElementById("lesson");
   const topicIndex = new Map();
+  const evaluaciones = window.courseAssessmentData;
+  const estadosEvaluacion = new Map();
   let activeTopicId = "que-es-ciencia-datos";
+  const visualMensajes = {
+    ciclo: "El recorrido conecta una pregunta con los datos, el análisis y una decisión. Es iterativo: un resultado puede llevarnos a revisar una etapa anterior.",
+    pregunta: "Una pregunta clara precisa población, resultado, periodo y propósito; así se puede decidir qué datos y medidas hacen falta.",
+    tabla: "Cada fila representa una observación y cada columna una variable. Confirma la unidad de análisis antes de contar o resumir.",
+    archivo: "El archivo se transforma en una tabla solo si se interpretan bien separadores, encabezados, codificación y tipos.",
+    variables: "El tipo depende del significado: una cantidad se puede medir, una categoría identifica grupos y una fecha ordena eventos.",
+    validar: "La calidad se comprueba con reglas de completitud, consistencia y plausibilidad relacionadas con el uso previsto.",
+    faltantes: "Un signo de interrogación indica un dato ausente que debe investigarse. No equivale automáticamente a cero ni justifica imputar sin criterio.",
+    distribucion: "La forma de la distribución importa: antes de escoger media o mediana, revisa asimetría, extremos y grupos.",
+    histograma: "Las barras contiguas agrupan valores numéricos en intervalos; su forma ayuda a leer centro, dispersión y colas.",
+    muestra: "La muestra es la parte observada de la población. Su tamaño no elimina sesgos de selección o cobertura.",
+    correlacion: "Los puntos muestran asociación entre dos variables; una tendencia no demuestra que una variable cause la otra.",
+    graficos: "El gráfico se elige por la pregunta: barras comparan categorías, líneas muestran tiempo y dispersión muestra relaciones numéricas.",
+    historia: "Un buen título comunica el hallazgo respaldado por los datos y conserva el contexto necesario para interpretarlo.",
+    aprendizaje: "En supervisado hay etiquetas conocidas; en no supervisado se buscan patrones sin una etiqueta objetivo.",
+    regresion: "La recta resume una relación lineal estimada. Revisa residuos y rango de datos antes de interpretar o extrapolar.",
+    arbol: "Cada división aplica una regla. Un árbol o bosque puede predecir, pero sus reglas no prueban una causa.",
+    particion: "Entrenamiento ajusta, validación ayuda a elegir y prueba estima el resultado final. La prueba se mantiene separada.",
+    metricas: "La matriz separa verdaderos y falsos positivos y negativos; la métrica adecuada depende del coste de cada error.",
+    alerta: "La fuga introduce información que no estaría disponible al predecir; el sesgo y el impacto deben revisarse antes del uso.",
+    pipeline: "Un pipeline aplica limpieza, transformaciones y modelo en un orden reproducible, ajustando los pasos dentro de entrenamiento.",
+    proyecto: "El informe conecta pregunta, evidencia y recomendación; los límites e incertidumbres también forman parte del resultado."
+  };
 
   const cursos = [
     { titulo: "Ciencia de datos", categoria: "Datos e inteligencia artificial", icono: "▥", color: "#0f766e", disponible: true, descripcion: "Explora datos, estadística, visualización y modelos predictivos mediante una ruta guiada con fuentes abiertas." },
@@ -287,6 +312,24 @@
   modulos.forEach(modulo => modulo.temas.forEach((tema, index) => {
     topicIndex.set(tema.id, { modulo, tema, index });
   }));
+
+  modulos.forEach(modulo => {
+    const material = evaluaciones && evaluaciones[modulo.id];
+    if (!material || material.preguntas.length !== 20) {
+      throw new Error(`El módulo ${modulo.numero} debe tener exactamente 20 preguntas.`);
+    }
+    material.preguntas.forEach(([pregunta, opciones, respuesta, justificacion], indice) => {
+      if (!pregunta || opciones.length !== 4 || respuesta < 0 || respuesta > 3 || !justificacion) {
+        throw new Error(`La pregunta ${indice + 1} del módulo ${modulo.numero} no está completa.`);
+      }
+    });
+  });
+
+  function escaparHTML(texto) {
+    return String(texto).replace(/[&<>"']/g, caracter => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+    })[caracter]);
+  }
 
   function dibujarMalla() {
     catalog.innerHTML = cursos.map(curso => `
@@ -350,10 +393,10 @@
         <rect x="120" y="54" width="480" height="174" rx="12" fill="#fff" stroke="${c}" stroke-width="2"/>
         <rect x="120" y="54" width="480" height="44" rx="12" fill="${c}" fill-opacity=".17"/>
         <path d="M120 98h480M120 141h480M120 184h480M280 54v174M440 54v174" stroke="${c}" stroke-opacity=".35"/>
-        <g fill="#334155"><text x="200" y="82" font-weight="700">ID</text><text x="360" y="82" font-weight="700">Edad</text><text x="520" y="82" font-weight="700">Grupo</text>
-        <text x="200" y="127">001</text><text x="360" y="127">24</text><text x="520" y="127">A</text>
-        <text x="200" y="170">002</text><text x="360" y="170">31</text><text x="520" y="170">B</text>
-        <text x="200" y="213">003</text><text x="360" y="213">28</text><text x="520" y="213">A</text></g></g>`,
+        <g fill="#334155"><text x="200" y="82" font-weight="700">Pedido</text><text x="360" y="82" font-weight="700">Región</text><text x="520" y="82" font-weight="700">Recompra</text>
+        <text x="200" y="127">P-001</text><text x="360" y="127">Norte</text><text x="520" y="127">1</text>
+        <text x="200" y="170">P-002</text><text x="360" y="170">Sur</text><text x="520" y="170">0</text>
+        <text x="200" y="213">P-003</text><text x="360" y="213">Norte</text><text x="520" y="213">?</text></g></g>`,
       archivo: `<g font-family="system-ui" text-anchor="middle">
         <path d="M140 70h160l44 44v104H140z" fill="${c}" fill-opacity=".1" stroke="${c}" stroke-width="2"/><path d="M300 70v46h44" fill="none" stroke="${c}" stroke-width="2"/>
         <text x="244" y="154" fill="${c}" font-size="28" font-weight="800">.CSV</text><text x="244" y="182" fill="#64748b" font-size="13">delimitador · codificación</text>
@@ -361,15 +404,15 @@
         <rect x="480" y="92" width="112" height="100" rx="14" fill="${c}" fill-opacity=".16" stroke="${c}"/>
         <path d="M503 120h66m-66 20h66m-66 20h66m-44-44v64m22-64v64" stroke="${c}" stroke-opacity=".65"/>
         <text x="536" y="218" fill="#475569" font-size="13">DataFrame</text></g>`,
-      variables: `<g font-family="system-ui" text-anchor="middle"><rect x="76" y="82" width="170" height="116" rx="18" fill="${c}" fill-opacity=".15"/><text x="161" y="132" fill="${c}" font-size="18" font-weight="700">Numérica</text><text x="161" y="162" fill="#475569" font-size="14">18 · 3,5 · 120</text>
-        <rect x="275" y="82" width="170" height="116" rx="18" fill="${c}" fill-opacity=".2"/><text x="360" y="132" fill="${c}" font-size="18" font-weight="700">Categórica</text><text x="360" y="162" fill="#475569" font-size="14">rojo · azul · verde</text>
-        <rect x="474" y="82" width="170" height="116" rx="18" fill="${c}" fill-opacity=".25"/><text x="559" y="132" fill="${c}" font-size="18" font-weight="700">Temporal</text><text x="559" y="162" fill="#475569" font-size="14">2026-11-22</text></g>`,
+      variables: `<g font-family="system-ui" text-anchor="middle"><rect x="76" y="82" width="170" height="116" rx="18" fill="${c}" fill-opacity=".15"/><text x="161" y="132" fill="${c}" font-size="18" font-weight="700">Numérica</text><text x="161" y="162" fill="#475569" font-size="13">unidades · días</text>
+        <rect x="275" y="82" width="170" height="116" rx="18" fill="${c}" fill-opacity=".2"/><text x="360" y="132" fill="${c}" font-size="18" font-weight="700">Categórica</text><text x="360" y="162" fill="#475569" font-size="13">región · canal</text>
+        <rect x="474" y="82" width="170" height="116" rx="18" fill="${c}" fill-opacity=".25"/><text x="559" y="132" fill="${c}" font-size="18" font-weight="700">Temporal</text><text x="559" y="162" fill="#475569" font-size="13">fecha del pedido</text></g>`,
       validar: `<g font-family="system-ui" text-anchor="middle" fill="#334155"><circle cx="160" cy="132" r="55" fill="${c}" fill-opacity=".12" stroke="${c}" stroke-width="2"/><text x="160" y="127" font-size="14">Completa</text><text x="160" y="149" font-size="12">¿faltan datos?</text>
         <circle cx="360" cy="132" r="55" fill="${c}" fill-opacity=".18" stroke="${c}" stroke-width="2"/><text x="360" y="127" font-size="14">Consistente</text><text x="360" y="149" font-size="12">¿mismo formato?</text>
         <circle cx="560" cy="132" r="55" fill="${c}" fill-opacity=".24" stroke="${c}" stroke-width="2"/><text x="560" y="127" font-size="14">Plausible</text><text x="560" y="149" font-size="12">¿tiene sentido?</text></g>`,
       faltantes: `<g font-family="system-ui"><rect x="124" y="62" width="472" height="160" rx="14" fill="#fff" stroke="${c}" stroke-width="2"/><path d="M124 108h472M124 152h472M242 62v160M360 62v160M478 62v160" stroke="${c}" stroke-opacity=".35"/>
-        <g fill="#475569" font-size="15" text-anchor="middle"><text x="184" y="94">edad</text><text x="301" y="94">grupo</text><text x="419" y="94">ingreso</text><text x="537" y="94">visitas</text><text x="184" y="138">24</text><text x="301" y="138">A</text><text x="419" y="138">?</text><text x="537" y="138">4</text><text x="184" y="182">31</text><text x="301" y="182">B</text><text x="419" y="182">52</text><text x="537" y="182">—</text></g>
-        <circle cx="419" cy="132" r="14" fill="${c}" fill-opacity=".25"/><circle cx="537" cy="176" r="14" fill="${c}" fill-opacity=".25"/></g>`,
+        <g fill="#475569" font-size="14" text-anchor="middle"><text x="184" y="94">pedido</text><text x="301" y="94">región</text><text x="419" y="94">precio</text><text x="537" y="94">entrega</text><text x="184" y="138">P-001</text><text x="301" y="138">Norte</text><text x="419" y="138">?</text><text x="537" y="138">4 d</text><text x="184" y="182">P-002</text><text x="301" y="182">—</text><text x="419" y="182">52</text><text x="537" y="182">7 d</text></g>
+        <circle cx="419" cy="132" r="14" fill="${c}" fill-opacity=".25"/><circle cx="301" cy="176" r="14" fill="${c}" fill-opacity=".25"/></g>`,
       distribucion: `<g stroke="${c}" stroke-width="2"><path d="M110 205h500M110 205V64" fill="none" stroke="#94a3b8"/><rect x="150" y="161" width="48" height="44" fill="${c}" fill-opacity=".28"/><rect x="201" y="127" width="48" height="78" fill="${c}" fill-opacity=".38"/><rect x="252" y="87" width="48" height="118" fill="${c}" fill-opacity=".6"/><rect x="303" y="72" width="48" height="133" fill="${c}" fill-opacity=".75"/><rect x="354" y="104" width="48" height="101" fill="${c}" fill-opacity=".6"/><rect x="405" y="143" width="48" height="62" fill="${c}" fill-opacity=".4"/><rect x="456" y="169" width="48" height="36" fill="${c}" fill-opacity=".3"/></g><path d="M314 62v154" stroke="${c}" stroke-dasharray="5 6" stroke-width="2"/><text x="330" y="54" fill="${c}" font-family="system-ui" font-size="13">centro</text>`,
       histograma: `<g stroke="#94a3b8" stroke-width="2"><path d="M110 208h500M110 208V60"/></g><g fill="${c}"><rect x="145" y="161" width="50" height="47" opacity=".3"/><rect x="197" y="129" width="50" height="79" opacity=".45"/><rect x="249" y="86" width="50" height="122" opacity=".65"/><rect x="301" y="66" width="50" height="142" opacity=".85"/><rect x="353" y="106" width="50" height="102" opacity=".65"/><rect x="405" y="151" width="50" height="57" opacity=".4"/><rect x="457" y="177" width="50" height="31" opacity=".3"/></g><text x="360" y="245" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">valores →</text>`,
       muestra: `<g font-family="system-ui" text-anchor="middle"><rect x="74" y="88" width="220" height="110" rx="16" fill="${c}" fill-opacity=".1" stroke="${c}"/><text x="184" y="130" fill="${c}" font-size="18" font-weight="700">Población</text><text x="184" y="160" fill="#475569" font-size="14">grupo completo</text><path d="M300 142h110m-14-14 14 14-14 14" stroke="${c}" stroke-width="3" fill="none"/>
@@ -406,8 +449,14 @@
               <span>${tema.titulo}</span>
             </button>`).join("")}
         </div>
+        <button type="button" class="curso-modulo__evaluacion" data-evaluacion="${modulo.id}">
+          <span aria-hidden="true">✓</span> Evaluación · 20 preguntas · 20 puntos
+        </button>
       </details>`).join("");
     nav.querySelectorAll("[data-tema]").forEach(boton => boton.addEventListener("click", () => mostrarTema(boton.dataset.tema)));
+    nav.querySelectorAll("[data-evaluacion]").forEach(boton => {
+      boton.addEventListener("click", () => mostrarEvaluacion(boton.dataset.evaluacion));
+    });
   }
 
   function mostrarTema(id) {
@@ -423,6 +472,16 @@
     const bibliografia = tema.fuentes.map(([titulo, url]) =>
       `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${titulo}<span aria-hidden="true"> ↗</span></a><small>Recurso en línea de acceso abierto</small></li>`
     ).join("");
+    const material = evaluaciones[modulo.id];
+    const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(material.videoQuery)}`;
+    const referenciasAPA = material.referenciasAPA.map(referencia => {
+      const editorial = referencia.editorial && !referencia.autor.toLowerCase().includes(referencia.editorial.toLowerCase())
+        ? ` ${escaparHTML(referencia.editorial)}`
+        : "";
+      return `<li><span>${escaparHTML(referencia.autor)} (${escaparHTML(referencia.fecha)}). <em>${escaparHTML(referencia.titulo)}</em>${editorial}.</span>
+        <a href="${referencia.url}" target="_blank" rel="noopener noreferrer">${escaparHTML(referencia.url)}</a>
+        ${referencia.nota ? `<small>${escaparHTML(referencia.nota)}</small>` : ""}</li>`;
+    }).join("");
 
     nav.querySelectorAll("[data-tema]").forEach(boton => {
       boton.setAttribute("aria-current", String(boton.dataset.tema === id ? "page" : "false"));
@@ -434,10 +493,32 @@
     lesson.innerHTML = `
       <div class="leccion__topline"><span class="leccion__modulo">Módulo ${modulo.numero} · ${modulo.titulo}</span><span class="leccion__tiempo">${tema.tiempo} de lectura</span></div>
       <div class="leccion__cabecera"><span class="leccion__icono" aria-hidden="true">${modulo.icono}</span><div><span class="eyebrow">Tema ${String(index + 1).padStart(2, "0")} del módulo</span><h2>${tema.titulo}</h2><p>${tema.resumen}</p></div></div>
-      <figure class="leccion__figura">${dibujar(modulo, tema.tipo)}<figcaption>Ilustración conceptual · ${tema.titulo}</figcaption></figure>
+      <figure class="leccion__figura">
+        <button type="button" class="leccion__figura-control" data-explicar-imagen aria-expanded="false" aria-controls="explicacionImagen">
+          ${dibujar(modulo, tema.tipo)}
+          <span>Selecciona la imagen para ver qué representa</span>
+        </button>
+        <figcaption>Ilustración conceptual · ${tema.titulo}</figcaption>
+        <p class="leccion__figura-mensaje" id="explicacionImagen" aria-live="polite" hidden>${visualMensajes[tema.tipo] || "La ilustración resume una idea clave de esta lección."}</p>
+      </figure>
       <div class="leccion__texto">${tema.cuerpo}</div>
       <aside class="leccion__ejemplo"><span class="leccion__ejemplo-icono" aria-hidden="true">✦</span><div><strong>Ejemplo para pensarlo</strong><p>${tema.ejemplo}</p></div></aside>
-      <section class="leccion__fuentes" aria-labelledby="fuentesTitulo"><div><span class="eyebrow">Para seguir leyendo</span><h3 id="fuentesTitulo">Libros y recursos abiertos</h3><p>Estas referencias respaldan los conceptos y permiten profundizar en el tema.</p></div><ul>${bibliografia}</ul></section>
+      <section class="leccion__teoria" aria-label="Teoría y ejemplo del módulo">
+        <span class="eyebrow">En profundidad · Módulo ${modulo.numero}</span>
+        <h3>La idea central</h3>
+        ${material.teoria}
+        <aside><strong>Ejemplo aplicado al caso</strong>${material.ejemplo}</aside>
+        <div class="leccion__referencias-apa">
+          <h4>Referencias de esta teoría · APA 7.ª edición</h4>
+          <ul>${referenciasAPA}</ul>
+        </div>
+      </section>
+      <section class="leccion__caso" aria-label="Caso práctico común"><span class="eyebrow">Caso práctico · Tienda Nube</span><p>${material.caso}</p></section>
+      <section class="leccion__codigo" aria-label="Código Python del módulo">
+        <div><span class="eyebrow">Python · Módulo ${modulo.numero}</span><h3>Código para aplicar esta etapa</h3></div>
+        <pre><code>${escaparHTML(material.codigo)}</code></pre>
+      </section>
+      <section class="leccion__fuentes" aria-labelledby="fuentesTitulo"><div><span class="eyebrow">Para seguir leyendo</span><h3 id="fuentesTitulo">Libros, recursos y videos gratuitos</h3><p>Lecturas abiertas, fichas oficiales de normas y videos en español disponibles gratuitamente.</p></div><ul>${bibliografia}<li class="leccion__video"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer">Ver videos gratuitos en español: ${escaparHTML(modulo.titulo)}<span aria-hidden="true"> ↗</span></a><small>Búsqueda de videos públicos en YouTube · acceso gratuito</small></li></ul></section>
       <div class="leccion__navegacion">
         <button type="button" class="leccion__nav-btn" data-destino="${anterior || ""}" ${anterior ? "" : "disabled"}>← Tema anterior</button>
         <span>${posicion + 1} de ${topicIndex.size}</span>
@@ -448,6 +529,118 @@
         if (boton.dataset.destino) mostrarTema(boton.dataset.destino);
       });
     });
+    const botonImagen = lesson.querySelector("[data-explicar-imagen]");
+    const explicacionImagen = lesson.querySelector("#explicacionImagen");
+    botonImagen.addEventListener("click", () => {
+      explicacionImagen.hidden = !explicacionImagen.hidden;
+      botonImagen.setAttribute("aria-expanded", String(!explicacionImagen.hidden));
+    });
+  }
+
+  function mostrarEvaluacion(id) {
+    const modulo = modulos.find(item => item.id === id);
+    if (!modulo) return;
+    const moduloIndex = modulos.indexOf(modulo);
+    nav.querySelectorAll("[data-tema]").forEach(boton => {
+      boton.setAttribute("aria-current", "false");
+    });
+    nav.querySelectorAll(".curso-modulo").forEach((details, index) => {
+      details.open = index === moduloIndex;
+    });
+    if (!estadosEvaluacion.has(id)) {
+      estadosEvaluacion.set(id, {
+        actual: 0,
+        respuestas: Array(20).fill(null),
+        puntaje: 0,
+        terminado: false
+      });
+    }
+    dibujarEvaluacion(modulo);
+  }
+
+  function dibujarEvaluacion(modulo) {
+    const material = evaluaciones[modulo.id];
+    const estado = estadosEvaluacion.get(modulo.id);
+    lesson.style.setProperty("--tema", modulo.color);
+    if (estado.terminado) {
+      const preguntas = material.preguntas.map(([texto, opciones, correcta, justificacion], indice) => {
+        const respuesta = estado.respuestas[indice];
+        return `<details class="evaluacion__revision">
+          <summary>Pregunta ${indice + 1}: ${escaparHTML(texto)}</summary>
+          <p>Tu respuesta: ${escaparHTML(opciones[respuesta])}</p>
+          <p>Respuesta correcta: <strong>${escaparHTML(opciones[correcta])}</strong></p>
+          <p>${escaparHTML(justificacion)}</p>
+        </details>`;
+      }).join("");
+      lesson.innerHTML = `
+        <div class="leccion__topline"><span class="leccion__modulo">Módulo ${modulo.numero} · ${modulo.titulo}</span><span class="leccion__tiempo">Resultado final</span></div>
+        <section class="evaluacion__resultado" aria-live="polite">
+          <span class="eyebrow">Evaluación completada</span>
+          <h2>${estado.puntaje} de 20 puntos</h2>
+          <p>Respondiste las 20 preguntas. Revisa cada explicación y vuelve a intentar para practicar.</p>
+          <button type="button" class="evaluacion__boton" data-reiniciar>Intentar de nuevo</button>
+        </section>
+        <section class="evaluacion__repaso" aria-label="Revisión de respuestas">
+          <h3>Respuestas y justificaciones</h3>${preguntas}
+        </section>`;
+      lesson.querySelector("[data-reiniciar]").addEventListener("click", () => {
+        estadosEvaluacion.set(modulo.id, {
+          actual: 0,
+          respuestas: Array(20).fill(null),
+          puntaje: 0,
+          terminado: false
+        });
+        dibujarEvaluacion(modulo);
+      });
+      return;
+    }
+
+    const [texto, opciones, correcta, justificacion] = material.preguntas[estado.actual];
+    const respuesta = estado.respuestas[estado.actual];
+    const opcionesHTML = opciones.map((opcion, indice) => {
+      const marcada = respuesta !== null && respuesta === indice;
+      const esCorrecta = respuesta !== null && correcta === indice;
+      const clase = esCorrecta ? " evaluacion__opcion--correcta" : marcada ? " evaluacion__opcion--incorrecta" : "";
+      return `<button type="button" class="evaluacion__opcion${clase}" data-respuesta="${indice}" ${respuesta !== null ? "disabled" : ""}>
+        <span>${String.fromCharCode(65 + indice)}.</span> ${escaparHTML(opcion)}
+      </button>`;
+    }).join("");
+    const retroalimentacion = respuesta === null ? "" : `
+      <div class="evaluacion__retroalimentacion ${respuesta === correcta ? "evaluacion__retroalimentacion--correcta" : "evaluacion__retroalimentacion--incorrecta"}" role="status">
+        <strong>${respuesta === correcta ? "¡Correcto!" : `La respuesta correcta es: ${escaparHTML(opciones[correcta])}`}</strong>
+        <p>${escaparHTML(justificacion)}</p>
+      </div>`;
+    lesson.innerHTML = `
+      <div class="leccion__topline"><span class="leccion__modulo">Módulo ${modulo.numero} · ${modulo.titulo}</span><span class="leccion__tiempo">20 preguntas · 20 puntos</span></div>
+      <section class="evaluacion" aria-labelledby="evaluacionTitulo">
+        <div class="evaluacion__encabezado">
+          <div><span class="eyebrow">Pregunta ${estado.actual + 1} de 20</span><h2 id="evaluacionTitulo">Comprueba lo aprendido</h2></div>
+          <span class="evaluacion__puntaje">${estado.puntaje} / 20 puntos</span>
+        </div>
+        <div class="evaluacion__progreso" role="progressbar" aria-label="Progreso de la evaluación" aria-valuemin="0" aria-valuemax="20" aria-valuenow="${estado.actual + (respuesta !== null ? 1 : 0)}">
+          <span style="width:${(estado.actual + (respuesta !== null ? 1 : 0)) * 5}%"></span>
+        </div>
+        <h3 class="evaluacion__pregunta">${escaparHTML(texto)}</h3>
+        <div class="evaluacion__opciones">${opcionesHTML}</div>
+        ${retroalimentacion}
+        ${respuesta === null ? "" : `<button type="button" class="evaluacion__boton" data-siguiente>${estado.actual === 19 ? "Ver resultado" : "Siguiente pregunta →"}</button>`}
+      </section>`;
+    lesson.querySelectorAll("[data-respuesta]").forEach(boton => {
+      boton.addEventListener("click", () => {
+        const eleccion = Number(boton.dataset.respuesta);
+        estado.respuestas[estado.actual] = eleccion;
+        if (eleccion === correcta) estado.puntaje += 1;
+        dibujarEvaluacion(modulo);
+      });
+    });
+    const siguiente = lesson.querySelector("[data-siguiente]");
+    if (siguiente) {
+      siguiente.addEventListener("click", () => {
+        if (estado.actual === 19) estado.terminado = true;
+        else estado.actual += 1;
+        dibujarEvaluacion(modulo);
+      });
+    }
   }
 
   dibujarMalla();
