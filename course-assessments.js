@@ -35,7 +35,7 @@ unidad_de_analisis = "pedido"`,
     ]
   },
   datos: {
-    caso: "Caso común · Tienda Nube comparte pedidos.csv: cada fila representa un pedido e incluye pedido_id, cliente_id, fecha, región, categoría, unidades, precio_unitario, descuento, canal, fecha_entrega y recompra_30d. Identificamos qué contiene el archivo y cómo está organizado antes de analizarlo.",
+    caso: "Caso común · Tienda Nube comparte pedidos.csv: cada fila representa un pedido e incluye pedido_id, cliente_id, fecha, región, categoría, unidades, precio_unitario, descuento, canal, fecha_prometida, fecha_entrega y recompra_30d (1 = sí, 0 = no; vacío si aún no se observó). Identificamos qué contiene el archivo y cómo está organizado antes de analizarlo.",
     teoria: `<p>Antes de calcular, definimos el <strong>esquema</strong>: una fila, una unidad de análisis; una columna, una característica de esa unidad. Una clave debe identificar el registro de acuerdo con esa definición. Los nombres, tipos y unidades tienen que conservar su significado: <code>pedido_id</code> es una etiqueta, <code>unidades</code> una cantidad y <code>fecha</code> una fecha.</p><p>La importación no valida por sí sola el contenido. Revisamos unas filas, las dimensiones, los tipos, delimitadores y valores inesperados; documentamos origen, periodo y transformaciones. Así evitamos que una fecha se lea como texto o que un CSV completo quede accidentalmente en una sola columna (pandas development team, s. f.; VanderPlas, 2016).</p>`,
     ejemplo: `<p>Si pedidos.csv muestra 10 000 filas, comprobamos que <code>pedido_id</code> tenga 10 000 valores únicos o investigamos las repeticiones. Si <code>fecha_entrega</code> se importó como texto, la convertimos a fecha antes de calcular días. Un código de región no se promedia: se trata como categoría.</p>`,
     referenciasAPA: [
@@ -46,7 +46,7 @@ unidad_de_analisis = "pedido"`,
 
 pedidos = pn.read_csv(
     "pedidos.csv",
-    parse_dates=["fecha", "fecha_entrega"]
+    parse_dates=["fecha", "fecha_prometida", "fecha_entrega"]
 )
 print(pedidos.head())
 print(pedidos.shape)
@@ -140,11 +140,20 @@ imputar_categoricas = SimpleImputer(strategy="most_frequent")`,
       { autor: "Downey, A. B.", fecha: "2024", titulo: "Think stats: Exploratory data analysis in Python (3rd ed.)", editorial: "Green Tea Press", url: "https://allendowney.github.io/ThinkStats/" },
       { autor: "OpenIntro", fecha: "s. f.", titulo: "OpenIntro statistics (4th ed.)", editorial: "OpenIntro", url: "https://www.openintro.org/book/os/" }
     ],
-    codigo: `tasa_recompra = pedidos.groupby("region")["recompra_30d"].mean()
+    codigo: `pedidos_validos = pedidos.dropna(
+    subset=["fecha_entrega", "fecha_prometida"]
+).copy()
+pedidos_validos["cumple_plazo"] = (
+    pedidos_validos["fecha_entrega"] <= pedidos_validos["fecha_prometida"]
+).astype("int8")
+
+tasa_en_plazo = pedidos_validos["cumple_plazo"].mean()
+tasa_recompra = pedidos.groupby("region")["recompra_30d"].mean()
 resumen_entregas = pedidos["tiempo_entrega_dias"].describe()
 mediana_entrega = pedidos["tiempo_entrega_dias"].median()
 correlacion = pedidos[["descuento", "recompra_30d"]].corr()
 
+print(f"Pedidos dentro del plazo: {tasa_en_plazo:.1%}")
 print(tasa_recompra)
 print(resumen_entregas)
 print(mediana_entrega)
@@ -216,12 +225,14 @@ plt.show()`,
     ]
   },
   aprendizaje: {
-    caso: "Caso común · Tienda Nube plantea una clasificación supervisada: estimar recompra_30d a partir de información disponible al cerrar la entrega. Comparamos un modelo inicial con una referencia simple; la predicción sirve para orientar una comunicación útil, no para excluir clientes.",
-    teoria: `<p>Como <code>recompra_30d</code> tiene dos valores, formulamos una clasificación supervisada. Las características se eligen según el momento real de predicción: usamos región, categoría, cantidad, precio, descuento, canal y tiempo de entrega, pero excluimos identificadores y cualquier dato que solo aparezca después de la ventana objetivo.</p><p>Un pipeline encadena imputación, codificación y estimador para que el preprocesamiento se ajuste solo con entrenamiento. La codificación one-hot no inventa un orden entre categorías. Un bosque aleatorio puede representar relaciones no lineales, pero conviene compararlo con una regla base: mayor complejidad no garantiza utilidad. Importancia predictiva no equivale a causa, y el modelo puede reproducir sesgos de los datos (James et al., 2023; scikit-learn developers, s. f.).</p>`,
-    ejemplo: `<p>El modelo usa pedidos anteriores para estimar la probabilidad de recompra de un cliente nuevo para el modelo. Si un cliente aparece en varios pedidos, todos sus pedidos se mantienen en el mismo grupo de entrenamiento o prueba para evitar que el modelo “reconozca” a la persona durante la evaluación.</p>`,
+    caso: "Caso común · Tienda Nube desarrolla dos tareas supervisadas con los mismos pedidos: clasificar recompra_30d (sí/no) y estimar los días de entrega (una cantidad). También explora grupos de pedidos sin etiquetas para descubrir similitudes, sin tratar esos grupos como verdades automáticas.",
+    teoria: `<p>La etiqueta determina el tipo de aprendizaje supervisado: una respuesta categórica se modela con clasificación y una respuesta numérica con regresión. Para <code>recompra_30d</code> usamos un clasificador; para <code>tiempo_entrega_dias</code> podemos empezar con una regresión lineal simple y luego probar una regresión múltiple con varios predictores. Los modelos polinómicos, Ridge y Lasso amplían el repertorio cuando la relación o la complejidad lo requieren, pero deben compararse con una línea base y validarse fuera de muestra.</p><p>En clasificación, el pipeline prepara variables y entrena un Random Forest. En regresión, una regresión múltiple estima la respuesta a partir de varios predictores; sus coeficientes describen asociaciones condicionales, no efectos causales. En ambos casos se excluyen identificadores, variables que no existirían al predecir y cualquier información derivada del resultado futuro. Las transformaciones se ajustan solo con datos de entrenamiento.</p><p>Un modelo no supervisado, como clustering, no recibe una etiqueta objetivo: organiza observaciones según una medida de similitud. El analista debe comprobar la estabilidad y utilidad de los grupos antes de interpretarlos. Elegir entre estos enfoques depende de la pregunta, los datos disponibles y el coste de los errores (James et al., 2023; scikit-learn developers, s. f.).</p>`,
+    ejemplo: `<p>Para el clasificador, la respuesta es <code>recompra_30d</code>. Para la regresión, la respuesta es <code>tiempo_entrega_dias</code> y las entradas pueden incluir unidades, descuento, región, categoría y canal. Los pedidos del mismo cliente se mantienen juntos en entrenamiento o prueba, de modo que la evaluación mida el desempeño en clientes que no aparecieron durante el ajuste.</p>`,
     referenciasAPA: [
       { autor: "James, G., Witten, D., Hastie, T., Tibshirani, R., & Taylor, J.", fecha: "2023", titulo: "An introduction to statistical learning: with applications in Python", editorial: "Springer", url: "https://www.statlearning.com/" },
-      { autor: "scikit-learn developers", fecha: "s. f.", titulo: "Preprocessing data", editorial: "scikit-learn user guide", url: "https://scikit-learn.org/stable/modules/preprocessing.html" }
+      { autor: "scikit-learn developers", fecha: "s. f.", titulo: "Preprocessing data", editorial: "scikit-learn user guide", url: "https://scikit-learn.org/stable/modules/preprocessing.html" },
+      { autor: "scikit-learn developers", fecha: "s. f.", titulo: "Linear models", editorial: "scikit-learn user guide", url: "https://scikit-learn.org/stable/modules/linear_model.html" },
+      { autor: "scikit-learn developers", fecha: "s. f.", titulo: "Regression metrics", editorial: "scikit-learn user guide", url: "https://scikit-learn.org/stable/modules/model_evaluation.html#regression-metrics" }
     ],
     codigo: `from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
@@ -269,14 +280,14 @@ modelo.fit(X.iloc[entrena], y.iloc[entrena])`,
       ["¿Por qué se usa Pipeline para preparar y clasificar?", ["Encadena transformaciones y modelo para ajustar pasos consistentemente", "Crea automáticamente datos verdaderos", "Garantiza causalidad", "Elimina la necesidad de evaluar"], 0, "Pipeline aplica transformaciones y modelo de forma conjunta y ayuda a evitar fugas en validación."],
       ["¿Qué ventaja tiene separar clientes con GroupShuffleSplit?", ["Evita que pedidos del mismo cliente aparezcan en entrenamiento y prueba", "Asegura que todas las etiquetas sean iguales", "Ordena regiones alfabéticamente", "Convierte el problema en regresión"], 0, "Separar por cliente reduce el riesgo de que el modelo memorice patrones de clientes vistos en ambos conjuntos."],
       ["¿Qué hace RandomForestClassifier?", ["Combina predicciones de varios árboles para clasificar", "Calcula únicamente medias", "Dibuja mapas", "Convierte un CSV a Excel"], 0, "Un bosque aleatorio ensambla árboles de decisión y vota o agrega sus predicciones para clasificar."],
-      ["¿Qué significa class_weight=\"balanced\"?", ["Ajusta los pesos de clases según sus frecuencias", "Hace que el conjunto sea automáticamente equilibrado", "Cambia la métrica a 100%", "Elimina la clase minoritaria"], 0, "El ajuste pondera más las clases menos frecuentes durante el aprendizaje; no modifica por sí solo las observaciones."],
+      ["¿Qué diferencia la regresión lineal simple de la múltiple?", ["La simple usa un predictor y la múltiple incorpora dos o más", "La simple predice categorías y la múltiple fechas", "La simple no tiene respuesta y la múltiple sí", "La múltiple siempre demuestra causalidad"], 0, "La diferencia es el número de predictores incluidos; ambos modelos estiman una respuesta numérica."],
       ["¿Qué distingue la regresión de la clasificación?", ["La regresión estima valores numéricos; la clasificación predice categorías", "La regresión solo usa CSV", "La clasificación no requiere etiquetas", "No hay diferencia"], 0, "El tipo de objetivo define la tarea: continuo para regresión, categorías para clasificación."],
-      ["¿Qué hace GroupShuffleSplit en el ejemplo?", ["Genera índices de entrenamiento y prueba respetando grupos", "Selecciona la mejor explicación", "Crea categorías one-hot", "Imputa fechas"], 0, "El divisor asigna grupos completos a cada conjunto, aquí usando cliente_id."],
-      ["¿Por qué usar una semilla como random_state=42?", ["Facilita repetir una partición o resultado aleatorio", "Garantiza mayor precisión", "Elimina todo sesgo", "Reemplaza los datos de prueba"], 0, "Una semilla fija facilita reproducir una ejecución, pero no garantiza que el modelo sea válido."],
+      ["¿Por qué un modelo predictivo no demuestra causalidad?", ["Predecir bien no identifica por sí solo el efecto causal de una variable", "Porque siempre usa variables categóricas", "Porque se entrena con datos", "Porque calcula una métrica"], 0, "La predicción y la causalidad son objetivos distintos; atribuir efectos requiere un diseño y supuestos adecuados."],
+      ["¿Qué expresa el MAE de una regresión que predice días de entrega?", ["El error absoluto medio en días", "El porcentaje de predicciones correctas", "La proporción de pedidos duplicados", "La cantidad de predictores"], 0, "MAE promedia las diferencias absolutas entre predicción y valor real; conserva la unidad de la respuesta, aquí días."],
       ["¿Qué dato sería fuga si se predice al momento de entregar?", ["Una variable que solo se conoce después de la ventana de recompra", "Región conocida al pedido", "Canal de compra", "Unidades compradas"], 0, "Una información posterior al momento de predicción no estaría disponible en el uso real y filtraría el futuro."],
-      ["¿Qué problema puede causar entrenar sin una referencia simple?", ["No se sabe si el modelo supera una regla base", "Se impide leer el CSV", "Se pierde la variable objetivo", "Se garantiza sobreajuste"], 0, "Un baseline sencillo ayuda a contextualizar si el modelo complejo añade valor."],
+      ["¿Qué diferencia al RMSE del MAE?", ["RMSE penaliza más los errores grandes y ambas métricas conservan la unidad de la respuesta", "RMSE mide categorías y MAE fechas", "MAE siempre es mayor que RMSE", "RMSE demuestra causalidad"], 0, "Al elevar errores al cuadrado, RMSE da mayor peso a errores grandes; ambos se expresan en días para esta respuesta."],
       ["¿Qué significa sobreajuste?", ["Aprender detalles del entrenamiento que no generalizan bien", "No aprender nada del entrenamiento", "Usar una columna categórica", "Separar los grupos"], 0, "Un modelo sobreajustado funciona bien en los datos vistos pero peor en casos nuevos."],
-      ["¿Por qué Random Forest no demuestra causalidad?", ["Su capacidad predictiva no identifica por sí sola efectos causales", "Porque usa árboles", "Porque los datos tienen columnas", "Porque el modelo es aleatorio"], 0, "Predicción y causalidad son objetivos distintos; para atribuir efectos se necesita diseño y supuestos apropiados."],
+      ["¿Qué significa R² en una regresión?", ["Resume cuánto mejora el ajuste frente a predecir la media; no es exactitud", "Es el porcentaje de predicciones correctas", "Mide el número de variables categóricas", "Demuestra que los predictores causan la respuesta"], 0, "R² compara el modelo con una referencia basada en la media; en prueba puede ser negativo y no equivale a una tasa de aciertos."],
       ["¿Qué debe revisarse antes de poner una predicción en uso?", ["Desempeño, errores, consecuencias y población de aplicación", "Solo que el código termine sin error", "Únicamente la cantidad de árboles", "El color de la curva"], 0, "La utilidad depende de cómo se comporta el modelo y de los impactos de sus errores."]
     ]
   },

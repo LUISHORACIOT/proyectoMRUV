@@ -172,23 +172,63 @@
       id: "aprendizaje", numero: "06", titulo: "Aprendizaje automático", color: "#0891b2", icono: "⌘",
       temas: [
         {
-          id: "supervisado", titulo: "Supervisado y no supervisado", tiempo: "7 min", tipo: "aprendizaje",
-          resumen: "Distingue predicción con etiquetas de la exploración de estructura sin etiquetas.",
-          cuerpo: `<p>En aprendizaje <strong>supervisado</strong> el conjunto incluye una variable objetivo: clasificación predice categorías y regresión predice valores numéricos. En aprendizaje no supervisado no hay una etiqueta objetivo conocida; se buscan grupos, representaciones o patrones.</p><p>El método debe seguir a la pregunta. Antes de entrenar, define qué se predice, cuándo estaría disponible cada variable y cuál es el coste de equivocarse. Un modelo complejo no sustituye una definición deficiente del problema.</p>`,
-          ejemplo: "Predecir si una transacción es fraudulenta es clasificación supervisada; segmentar clientes por comportamiento sin una etiqueta previa es agrupamiento no supervisado.",
+          id: "supervisado", titulo: "Modelos supervisados y no supervisados", tiempo: "8 min", tipo: "aprendizaje",
+          resumen: "El aprendizaje supervisado predice resultados conocidos; el no supervisado descubre patrones sin etiquetas.",
+          cuerpo: `<p>El <strong>aprendizaje supervisado</strong> utiliza ejemplos que incluyen características y una respuesta conocida, llamada etiqueta. Si la etiqueta es una categoría —por ejemplo, recompra o no recompra— se trata de clasificación; si es una cantidad —como días de entrega— se trata de regresión. Durante el entrenamiento, el modelo ajusta sus parámetros para relacionar las entradas con esas respuestas.</p><p>El <strong>aprendizaje no supervisado</strong> trabaja sin una respuesta objetivo. Puede agrupar pedidos o clientes con comportamientos similares, reducir dimensiones o detectar observaciones inusuales. Un grupo encontrado por un algoritmo no tiene significado automático: el equipo debe interpretarlo y comprobar si es útil.</p><p>En Tienda Nube, predecir <code>recompra_30d</code> es supervisado porque ya existe una etiqueta histórica; agrupar pedidos por similitud en importe, categoría y canal es no supervisado. El método se elige según la pregunta, el momento en que se tomaría la decisión y el coste de equivocarse. Ninguno de estos métodos demuestra por sí solo causalidad.</p>`,
+          ejemplo: "Con etiquetas históricas de recompra, entrenamos un clasificador. Sin etiquetas de grupo, usamos clustering para explorar perfiles de pedidos y después verificamos si los grupos son estables e interpretables.",
           fuentes: [
             ["An Introduction to Statistical Learning — aprendizaje estadístico", "https://www.statlearning.com/"],
             ["Scikit-learn — aprendizaje supervisado", "https://scikit-learn.org/stable/supervised_learning.html"]
           ]
         },
         {
-          id: "regresion-lineal", titulo: "Regresión lineal", tiempo: "9 min", tipo: "regresion",
-          resumen: "Modela una respuesta numérica como combinación de variables y cuantifica errores.",
-          cuerpo: `<p>En una regresión lineal simple, el modelo relaciona un predictor con una respuesta mediante una recta: <strong>ŷ = β₀ + β₁x</strong>. β₀ es el intercepto y β₁ describe el cambio medio estimado en la respuesta por unidad de x, bajo el modelo.</p><p>La regresión múltiple añade predictores. Revisa supuestos, residuos, observaciones influyentes y colinealidad; una buena predicción no demuestra causalidad. Compara el desempeño fuera de muestra y comunica las unidades y el dominio donde la interpretación es razonable.</p>`,
-          ejemplo: "Un modelo de precio según superficie puede extrapolar mal a viviendas mucho mayores que las observadas. No interpretes la recta fuera del rango de datos sin justificación.",
+          id: "regresion-lineal", titulo: "Regresión lineal simple y múltiple", tiempo: "12 min", tipo: "regresion",
+          resumen: "La regresión estima una respuesta numérica con uno o varios predictores y se evalúa con métricas de error.",
+          cuerpo: `<p>La <strong>regresión lineal simple</strong> relaciona una respuesta numérica con un predictor: <strong>ŷ = β₀ + β₁x</strong>. La <strong>regresión lineal múltiple</strong> incorpora varios predictores: <strong>ŷ = β₀ + β₁x₁ + β₂x₂ + … + βₚxₚ</strong>. En Tienda Nube, primero estimamos los días de entrega a partir de las unidades del pedido; después podemos añadir descuento, región, categoría y canal.</p><p>En el modelo múltiple, cada coeficiente representa el cambio estimado en la respuesta por una unidad del predictor correspondiente, manteniendo constantes los demás predictores. Es una asociación condicional, no una prueba de causalidad. Si los predictores están muy correlacionados, la multicolinealidad puede volver inestables los coeficientes; por eso conviene revisar correlaciones, residuos y, cuando corresponda, el factor de inflación de la varianza (VIF).</p><p><strong>Métricas de evaluación:</strong> el error absoluto medio (MAE) se expresa en días y es fácil de interpretar; la raíz del error cuadrático medio (RMSE) también se expresa en días, pero penaliza más los errores grandes; el error cuadrático medio (MSE) queda en días al cuadrado. R² compara el modelo con una predicción basada en la media y puede ser negativo en datos de prueba; <strong>no es el porcentaje de predicciones correctas</strong>. R² ajustado penaliza añadir predictores y ayuda a comparar modelos múltiples con la misma respuesta y muestra. MAPE puede ser engañosa o indefinida si la respuesta contiene ceros o valores cercanos a cero.</p><p>Como indicador de negocio, Tienda Nube puede seguir el porcentaje de pedidos entregados dentro del plazo prometido. Ninguna métrica aislada basta: se compara con una línea base, se revisan los residuos y se valida con datos que no se usaron para entrenar. Linealidad, independencia y varianza constante de los errores son supuestos importantes; la normalidad de los residuos es especialmente relevante para la inferencia clásica, no una condición universal para toda predicción (James et al., 2023; scikit-learn developers, s. f.).</p><p>Si la relación no es lineal, pueden añadirse términos polinómicos. Ridge y Lasso penalizan los coeficientes para controlar la complejidad, aunque también requieren ajuste y evaluación independientes.</p>`,
+          ejemplo: "Modelo simple: predecir días de entrega usando solo unidades. Modelo múltiple: añadir descuento, región y canal. Si el MAE de prueba es 1,8 días, el error absoluto medio es aproximadamente 1,8 días; no significa que cada pedido falle exactamente ese valor.",
+          codigo: `import numpy as np
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import GroupShuffleSplit
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder
+
+columnas = ["unidades", "descuento", "region", "categoria", "canal"]
+regresion = pedidos.dropna(subset=["tiempo_entrega_dias"]).copy()
+X_reg = regresion[columnas]
+y_reg = regresion["tiempo_entrega_dias"]
+numericas = ["unidades", "descuento"]
+categoricas = ["region", "categoria", "canal"]
+preparar_regresion = ColumnTransformer([
+    ("numericas", SimpleImputer(strategy="median"), numericas),
+    ("categoricas", Pipeline([
+        ("imputar", SimpleImputer(strategy="most_frequent")),
+        ("codificar", OneHotEncoder(handle_unknown="ignore"))
+    ]), categoricas)
+])
+modelo_regresion = Pipeline([
+    ("preparar", preparar_regresion),
+    ("regresor", LinearRegression())
+])
+particion = GroupShuffleSplit(test_size=0.2, random_state=42)
+entrena, prueba = next(particion.split(
+    X_reg, y_reg, groups=regresion["cliente_id"]
+))
+modelo_regresion.fit(X_reg.iloc[entrena], y_reg.iloc[entrena])
+y_prueba = y_reg.iloc[prueba]
+prediccion = modelo_regresion.predict(X_reg.iloc[prueba])
+prediccion_base = np.repeat(y_reg.iloc[entrena].mean(), len(prueba))
+mae = mean_absolute_error(y_prueba, prediccion)
+mae_base = mean_absolute_error(y_prueba, prediccion_base)
+rmse = np.sqrt(mean_squared_error(y_prueba, prediccion))
+r2 = r2_score(y_prueba, prediccion)
+print(f"MAE: {mae:.2f} días (base: {mae_base:.2f})")
+print(f"RMSE: {rmse:.2f} días | R²: {r2:.2f}")`,
           fuentes: [
             ["An Introduction to Statistical Learning — regresión lineal", "https://www.statlearning.com/"],
-            ["Scikit-learn — modelos lineales", "https://scikit-learn.org/stable/modules/linear_model.html"]
+            ["Scikit-learn — modelos lineales y métricas de regresión", "https://scikit-learn.org/stable/modules/model_evaluation.html#regression-metrics"]
           ]
         },
         {
@@ -289,8 +329,8 @@
     correlacion: "Los puntos muestran asociación entre dos variables; una tendencia no demuestra que una variable cause la otra.",
     graficos: "El gráfico se elige por la pregunta: barras comparan categorías, líneas muestran tiempo y dispersión muestra relaciones numéricas.",
     historia: "Un buen título comunica el hallazgo respaldado por los datos y conserva el contexto necesario para interpretarlo.",
-    aprendizaje: "En supervisado hay etiquetas conocidas; en no supervisado se buscan patrones sin una etiqueta objetivo.",
-    regresion: "La recta resume una relación lineal estimada. Revisa residuos y rango de datos antes de interpretar o extrapolar.",
+    aprendizaje: "El aprendizaje supervisado aprende con ejemplos que ya tienen una respuesta conocida. El no supervisado busca grupos o patrones sin esa respuesta; los grupos deben interpretarse antes de usarlos.",
+    regresion: "A la izquierda, una recta estima días de entrega con un predictor. A la derecha, el plano representa una regresión múltiple con dos predictores; en la práctica se pueden usar más de dos.",
     arbol: "Cada división aplica una regla. Un árbol o bosque puede predecir, pero sus reglas no prueban una causa.",
     particion: "Entrenamiento ajusta, validación ayuda a elegir y prueba estima el resultado final. La prueba se mantiene separada.",
     metricas: "La matriz separa verdaderos y falsos positivos y negativos; la métrica adecuada depende del coste de cada error.",
@@ -374,10 +414,36 @@
 
   function dibujar(modulo, tipo) {
     const c = modulo.color;
-    const base = `<svg class="leccion__ilustracion" viewBox="0 0 720 280" role="img" aria-label="Ilustración: ${tipo}" style="--tema:${c}">
+    const titulosVisuales = {
+      ciclo: "El ciclo de un proyecto de datos",
+      pregunta: "De la necesidad a la pregunta",
+      tabla: "Pedidos organizados en filas y columnas",
+      archivo: "Del archivo CSV al DataFrame",
+      variables: "Tipos de variables en el caso",
+      validar: "Reglas para revisar la calidad",
+      faltantes: "Valores ausentes en pedidos",
+      distribucion: "Forma y centro de una distribución",
+      histograma: "Frecuencia de los tiempos de entrega",
+      muestra: "De la población a la muestra",
+      correlacion: "Asociación entre dos variables",
+      graficos: "Gráficos para distintas preguntas",
+      historia: "Del gráfico al mensaje principal",
+      aprendizaje: "Aprendizaje supervisado y no supervisado",
+      regresion: "Regresión simple y múltiple en 3D",
+      arbol: "Reglas de un árbol de decisión",
+      particion: "Separación de entrenamiento y prueba",
+      metricas: "Matriz de confusión",
+      alerta: "Fuga de datos, sesgo e impacto",
+      pipeline: "Etapas de un análisis reproducible",
+      proyecto: "Pregunta, evidencia y recomendación"
+    };
+    const tituloVisual = titulosVisuales[tipo] || "Concepto clave";
+    const base = `<svg class="leccion__ilustracion" viewBox="0 0 720 280" role="img" aria-label="${tituloVisual}" style="--tema:${c}">
+      <title>${tituloVisual}</title>
       <defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="${c}" stroke-opacity=".09"/></pattern></defs>
       <rect x="1" y="1" width="718" height="278" rx="20" fill="#fff" stroke="${c}" stroke-opacity=".2"/>
-      <rect x="1" y="1" width="718" height="278" rx="20" fill="url(#grid)"/>`;
+      <rect x="1" y="1" width="718" height="278" rx="20" fill="url(#grid)"/>
+      <text x="360" y="29" text-anchor="middle" fill="${c}" font-family="system-ui" font-size="15" font-weight="800">${tituloVisual}</text>`;
     const end = "</svg>";
     const graficos = {
       ciclo: `<g font-family="system-ui" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="700">
@@ -422,9 +488,38 @@
         <rect x="277" y="80" width="166" height="126" rx="16" fill="${c}" fill-opacity=".18"/><path d="M303 178h115M307 177l28-28 25 12 38-48" fill="none" stroke="${c}" stroke-width="4"/><text x="360" y="230" fill="#475569" font-size="14">Tendencia</text>
         <rect x="482" y="80" width="166" height="126" rx="16" fill="${c}" fill-opacity=".24"/><g fill="${c}"><circle cx="516" cy="161" r="5"/><circle cx="544" cy="143" r="5"/><circle cx="570" cy="156" r="5"/><circle cx="598" cy="116" r="5"/><circle cx="623" cy="105" r="5"/></g><text x="565" y="230" fill="#475569" font-size="14">Relación</text></g>`,
       historia: `<g font-family="system-ui"><rect x="86" y="54" width="548" height="170" rx="18" fill="#fff" stroke="${c}" stroke-width="2"/><text x="120" y="94" fill="${c}" font-size="14" font-weight="700">MENSAJE PRINCIPAL</text><text x="120" y="125" fill="#0f172a" font-size="20" font-weight="700">¿Qué cambió y por qué importa?</text><path d="M120 153h390M120 174h330" stroke="${c}" stroke-opacity=".3" stroke-width="4" stroke-linecap="round"/><circle cx="572" cy="162" r="27" fill="${c}" fill-opacity=".18"/><path d="M559 162l9 9 18-21" fill="none" stroke="${c}" stroke-width="4"/></g>`,
-      aprendizaje: `<g font-family="system-ui" text-anchor="middle"><rect x="78" y="78" width="238" height="128" rx="18" fill="${c}" fill-opacity=".1" stroke="${c}"/><text x="197" y="125" fill="${c}" font-size="18" font-weight="700">Etiquetas</text><text x="197" y="155" fill="#475569" font-size="14">supervisado</text><g fill="${c}"><circle cx="160" cy="181" r="6"/><circle cx="197" cy="181" r="6"/><circle cx="234" cy="181" r="6"/></g>
-        <rect x="404" y="78" width="238" height="128" rx="18" fill="${c}" fill-opacity=".2" stroke="${c}"/><text x="523" y="125" fill="${c}" font-size="18" font-weight="700">Sin etiquetas</text><text x="523" y="155" fill="#475569" font-size="14">no supervisado</text><g fill="${c}"><circle cx="490" cy="181" r="6"/><circle cx="523" cy="181" r="6"/><circle cx="556" cy="181" r="6"/></g></g>`,
-      regresion: `<g stroke="#94a3b8" stroke-width="2"><path d="M100 210h520M100 210V54"/></g><g fill="${c}" opacity=".8"><circle cx="150" cy="187" r="7"/><circle cx="215" cy="169" r="7"/><circle cx="280" cy="153" r="7"/><circle cx="345" cy="139" r="7"/><circle cx="410" cy="113" r="7"/><circle cx="480" cy="95" r="7"/><circle cx="550" cy="73" r="7"/></g><path d="M130 198L578 61" stroke="${c}" stroke-width="4"/><path d="M345 210v-71m-8 0h16m-8-6v12" stroke="${c}" stroke-width="2" stroke-dasharray="4 4"/>`,
+      aprendizaje: `<g font-family="system-ui" text-anchor="middle">
+        <rect x="34" y="58" width="310" height="184" rx="18" fill="${c}" fill-opacity=".08" stroke="${c}" stroke-width="2"/>
+        <text x="189" y="88" fill="${c}" font-size="17" font-weight="800">Con etiqueta conocida</text>
+        <text x="189" y="111" fill="#475569" font-size="13">El modelo aprende de ejemplos X → y</text>
+        <g fill="${c}"><circle cx="112" cy="153" r="8"/><circle cx="164" cy="153" r="8"/><circle cx="216" cy="153" r="8"/></g>
+        <g fill="#f97316"><circle cx="112" cy="184" r="8"/><circle cx="164" cy="184" r="8"/><circle cx="216" cy="184" r="8"/></g>
+        <text x="112" y="218" fill="#475569" font-size="12">Clase A</text><text x="216" y="218" fill="#475569" font-size="12">Clase B</text>
+        <rect x="376" y="58" width="310" height="184" rx="18" fill="${c}" fill-opacity=".13" stroke="${c}" stroke-width="2"/>
+        <text x="531" y="88" fill="${c}" font-size="17" font-weight="800">Sin etiqueta conocida</text>
+        <text x="531" y="111" fill="#475569" font-size="13">El modelo busca similitudes y grupos</text>
+        <g fill="#0891b2"><circle cx="464" cy="160" r="8"/><circle cx="492" cy="145" r="8"/><circle cx="500" cy="177" r="8"/></g>
+        <g fill="#f97316"><circle cx="570" cy="158" r="8"/><circle cx="599" cy="144" r="8"/><circle cx="590" cy="180" r="8"/></g>
+      </g>`,
+      regresion: `<g font-family="system-ui">
+        <rect x="28" y="50" width="306" height="204" rx="14" fill="#fff" stroke="${c}" stroke-opacity=".3"/>
+        <text x="181" y="73" text-anchor="middle" fill="${c}" font-size="14" font-weight="800">Simple · un predictor</text>
+        <path d="M68 218h235M68 218V91" fill="none" stroke="#64748b" stroke-width="2"/>
+        <text x="185" y="242" text-anchor="middle" fill="#475569" font-size="11">Unidades del pedido</text>
+        <text x="49" y="156" transform="rotate(-90 49 156)" text-anchor="middle" fill="#475569" font-size="11">Días de entrega</text>
+        <g fill="${c}"><circle cx="96" cy="199" r="5"/><circle cx="128" cy="184" r="5"/><circle cx="158" cy="179" r="5"/><circle cx="191" cy="153" r="5"/><circle cx="222" cy="145" r="5"/><circle cx="260" cy="115" r="5"/></g>
+        <path d="M82 207L281 105" stroke="${c}" stroke-width="3"/>
+        <path d="M191 153v-9" stroke="#f97316" stroke-width="2" stroke-dasharray="3 3"/>
+        <text x="112" y="101" fill="#334155" font-size="12">ŷ = β₀ + β₁x</text>
+        <text x="536" y="73" text-anchor="middle" fill="${c}" font-size="14" font-weight="800">Múltiple · plano 3D</text>
+        <path d="M390 222h255M390 222V92M390 222l72-48" fill="none" stroke="#64748b" stroke-width="2"/>
+        <text x="576" y="242" text-anchor="middle" fill="#475569" font-size="11">x₁ · unidades</text>
+        <text x="421" y="259" text-anchor="middle" fill="#475569" font-size="11">x₂ · descuento</text>
+        <text x="380" y="88" text-anchor="end" fill="#475569" font-size="11">ŷ · días</text>
+        <polygon points="432,184 568,154 630,105 494,135" fill="${c}" fill-opacity=".2" stroke="${c}" stroke-width="2"/>
+        <path d="M465 177L527 128M500 169L562 120M535 162L597 112M432 184l136-30M463 159l136-30M494 135l136-30" fill="none" stroke="${c}" stroke-opacity=".55" stroke-width="1.5"/>
+        <g fill="#f97316" stroke="#fff" stroke-width="2"><circle cx="470" cy="161" r="5"/><circle cx="523" cy="146" r="5"/><circle cx="558" cy="128" r="5"/><circle cx="594" cy="117" r="5"/></g>
+      </g>`,
       arbol: `<g font-family="system-ui" text-anchor="middle" stroke="${c}" stroke-width="3" fill="none"><path d="M360 92v46m0-16-110 54m110-54 110 54"/><path d="M250 176v30m220-30v30"/></g><g font-family="system-ui" text-anchor="middle"><rect x="294" y="52" width="132" height="45" rx="13" fill="${c}" fill-opacity=".18" stroke="${c}"/><text x="360" y="80" fill="${c}" font-size="15" font-weight="700">¿x &gt; umbral?</text><rect x="184" y="190" width="132" height="45" rx="13" fill="${c}" fill-opacity=".12" stroke="${c}"/><text x="250" y="218" fill="#334155" font-size="14">Rama A</text><rect x="404" y="190" width="132" height="45" rx="13" fill="${c}" fill-opacity=".24" stroke="${c}"/><text x="470" y="218" fill="#334155" font-size="14">Rama B</text></g>`,
       particion: `<g font-family="system-ui" text-anchor="middle"><rect x="90" y="92" width="540" height="92" rx="18" fill="#e2e8f0"/><path d="M90 110q0-18 18-18h300v92H108q-18 0-18-18z" fill="${c}" fill-opacity=".28"/><path d="M408 92h116v92H408z" fill="${c}" fill-opacity=".5"/><path d="M524 92h88q18 0 18 18v56q0 18-18 18h-88z" fill="${c}" fill-opacity=".8"/><text x="258" y="143" fill="#0f172a" font-size="17" font-weight="700">Entrenamiento</text><text x="466" y="143" fill="#0f172a" font-size="15" font-weight="700">Validación</text><text x="573" y="143" fill="#fff" font-size="14" font-weight="700">Prueba</text></g>`,
       metricas: `<g font-family="system-ui" text-anchor="middle"><rect x="148" y="54" width="424" height="178" rx="16" fill="#fff" stroke="${c}" stroke-width="2"/><path d="M148 110h424M360 54v178" stroke="${c}" stroke-opacity=".45"/><rect x="148" y="54" width="424" height="56" rx="16" fill="${c}" fill-opacity=".15"/><text x="254" y="89" fill="#334155" font-size="15" font-weight="700">Predice positivo</text><text x="466" y="89" fill="#334155" font-size="15" font-weight="700">Predice negativo</text><text x="170" y="145" fill="${c}" font-size="14" font-weight="700">Real +</text><text x="300" y="151" fill="#0f172a" font-size="20">VP</text><text x="500" y="151" fill="#0f172a" font-size="20">FN</text><text x="170" y="200" fill="${c}" font-size="14" font-weight="700">Real −</text><text x="300" y="205" fill="#0f172a" font-size="20">FP</text><text x="500" y="205" fill="#0f172a" font-size="20">VN</text></g>`,
@@ -473,6 +568,7 @@
       `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${titulo}<span aria-hidden="true"> ↗</span></a><small>Recurso en línea de acceso abierto</small></li>`
     ).join("");
     const material = evaluaciones[modulo.id];
+    const codigoTema = tema.codigo || material.codigo;
     const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(material.videoQuery)}`;
     const referenciasAPA = material.referenciasAPA.map(referencia => {
       const editorial = referencia.editorial && !referencia.autor.toLowerCase().includes(referencia.editorial.toLowerCase())
@@ -498,7 +594,7 @@
           ${dibujar(modulo, tema.tipo)}
           <span>Selecciona la imagen para ver qué representa</span>
         </button>
-        <figcaption>Ilustración conceptual · ${tema.titulo}</figcaption>
+        <figcaption>Esquema conceptual · ${tema.titulo}</figcaption>
         <p class="leccion__figura-mensaje" id="explicacionImagen" aria-live="polite" hidden>${visualMensajes[tema.tipo] || "La ilustración resume una idea clave de esta lección."}</p>
       </figure>
       <div class="leccion__texto">${tema.cuerpo}</div>
@@ -515,8 +611,8 @@
       </section>
       <section class="leccion__caso" aria-label="Caso práctico común"><span class="eyebrow">Caso práctico · Tienda Nube</span><p>${material.caso}</p></section>
       <section class="leccion__codigo" aria-label="Código Python del módulo">
-        <div><span class="eyebrow">Python · Módulo ${modulo.numero}</span><h3>Código para aplicar esta etapa</h3></div>
-        <pre><code>${escaparHTML(material.codigo)}</code></pre>
+        <div><span class="eyebrow">${tema.codigo ? "Python · Ejemplo de regresión" : `Python · Módulo ${modulo.numero}`}</span><h3>${tema.codigo ? "Entrenar una regresión y calcular sus métricas" : "Código para aplicar esta etapa"}</h3></div>
+        <pre><code>${escaparHTML(codigoTema)}</code></pre>
       </section>
       <section class="leccion__fuentes" aria-labelledby="fuentesTitulo"><div><span class="eyebrow">Para seguir leyendo</span><h3 id="fuentesTitulo">Libros, recursos y videos gratuitos</h3><p>Lecturas abiertas, fichas oficiales de normas y videos en español disponibles gratuitamente.</p></div><ul>${bibliografia}<li class="leccion__video"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer">Ver videos gratuitos en español: ${escaparHTML(modulo.titulo)}<span aria-hidden="true"> ↗</span></a><small>Búsqueda de videos públicos en YouTube · acceso gratuito</small></li></ul></section>
       <div class="leccion__navegacion">
