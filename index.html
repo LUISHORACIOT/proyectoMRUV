@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Cuestionario interactivo de Movimiento Rectilíneo Uniformemente Variado (MRUV) con respuestas justificadas e imágenes de referencia." />
-  <title>MRUV · Cuestionario interactivo</title>
+  <meta name="description" content="Plataforma educativa interactiva de ciencia de datos: CSV, Excel, DataFrames, estadística, análisis, visualización y modelos." />
+  <title>Ciencia de datos · Aprendizaje interactivo</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="hero">
     <div class="hero__inner">
-      <span class="badge">Física · Movimiento en una dimensión</span>
-      <h1>Cuestionario de <span>MRUV</span></h1>
+      <span class="badge">Datos · Estadística · Inteligencia artificial</span>
+      <h1>Aprende <span>Ciencia de datos</span></h1>
       <p class="hero__lead">
-        Movimiento Rectilíneo Uniformemente Variado: trayectoria recta y aceleración constante.
-        Responde las 12 preguntas, comprueba tus respuestas y lee la justificación de cada una.
+        Explora el ciclo completo del análisis de datos: carga archivos, limpia variables,
+        analiza patrones, crea gráficos y desarrolla modelos predictivos.
       </p>
       <div class="hero__chips" aria-label="Temas del cuestionario">
-        <span class="chip">Ecuaciones cinemáticas</span>
-        <span class="chip">Gráficas v–t y x–t</span>
-        <span class="chip">Caída libre</span>
-        <span class="chip">Signos y sentidos</span>
-        <span class="chip">Resolutor paso a paso</span>
+        <span class="chip">CSV y Excel</span>
+        <span class="chip">DataFrames</span>
+        <span class="chip">Tipos de variables</span>
+        <span class="chip">Limpieza de datos</span>
+        <span class="chip">Análisis estadístico</span>
+        <span class="chip">Regresión y matrices</span>
+        <span class="chip">Random Forest</span>
         <span class="chip">Investigación guiada</span>
         <span class="chip">Consulta por voz</span>
       </div>
@@ -72,59 +74,66 @@
     <!-- ======================= TEORÍA ======================= -->
     <section class="seccion" id="teoria">
       <div class="seccion__cabecera">
-        <span class="eyebrow">Repaso rápido</span>
+        <span class="eyebrow">Fundamentos</span>
         <h2>Las ideas clave</h2>
-        <p>En el MRUV la <strong>aceleración es constante</strong> distinta de cero. Eso permite usar tres ecuaciones y leer el movimiento en sus gráficas.</p>
+        <p>Un proyecto de ciencia de datos comienza con datos confiables y termina con <strong>hallazgos explicables</strong> y modelos útiles.</p>
       </div>
 
       <div class="formula-grid">
         <article class="formula-card">
-          <h3>Velocidad</h3>
-          <p class="formula">v = v₀ + a·t</p>
-          <p>La velocidad cambia de forma lineal con el tiempo. Si <em>a</em> y <em>v₀</em> tienen distinto signo, el móvil primero disminuye su rapidez.</p>
+          <h3>Variables</h3>
+          <p class="formula">Numéricas · Categóricas · Fechas</p>
+          <p>El tipo de cada variable determina qué estadísticas, limpiezas y gráficos son apropiados.</p>
         </article>
         <article class="formula-card">
-          <h3>Posición</h3>
-          <p class="formula">x = x₀ + v₀·t + ½·a·t²</p>
-          <p>El término cuadrático hace que la gráfica posición–tiempo sea una <strong>parábola</strong> (no una recta).</p>
+          <h3>Estadística</h3>
+          <p class="formula">Media · Mediana · Desviación</p>
+          <p>Resume tendencias y dispersión antes de avanzar a modelos más complejos.</p>
         </article>
         <article class="formula-card">
-          <h3>Sin el tiempo</h3>
-          <p class="formula">v² = v₀² + 2·a·(x − x₀)</p>
-          <p>Útil cuando conoces velocidades y desplazamiento, pero no el intervalo de tiempo.</p>
+          <h3>Modelado</h3>
+          <p class="formula">Entrenamiento · Validación · Predicción</p>
+          <p>Divide datos, evita fugas de información y compara el rendimiento con métricas adecuadas.</p>
         </article>
       </div>
 
       <div class="graficas">
         <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Gráfica velocidad contra tiempo: línea recta ascendente">
+          <svg viewBox="0 0 300 210" aria-label="Histograma de distribución">
             <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <line x1="38" y1="170" x2="268" y2="32" class="curva"/>
-            <g class="puntos"><circle cx="38" cy="170" r="4"/><circle cx="153" cy="101" r="4"/><circle cx="268" cy="32" r="4"/></g>
-            <text x="286" y="190" class="axis-text" text-anchor="end">t (s)</text>
-            <text x="14" y="24" class="axis-text">v (m/s)</text>
+            <rect x="55" y="125" width="24" height="45" fill="#86efac"/>
+            <rect x="82" y="95" width="24" height="75" fill="#22c55e"/>
+            <rect x="109" y="55" width="24" height="115" fill="#16a34a"/>
+            <rect x="136" y="82" width="24" height="88" fill="#22c55e"/>
+            <rect x="163" y="115" width="24" height="55" fill="#86efac"/>
+            <text x="286" y="190" class="axis-text" text-anchor="end">Valor</text>
+            <text x="14" y="24" class="axis-text">Frecuencia</text>
           </svg>
-          <figcaption><strong>v vs t:</strong> una recta inclinada. Su pendiente es la <strong>aceleración</strong> y el área bajo la curva es el <strong>desplazamiento</strong>.</figcaption>
+          <figcaption><strong>Histograma:</strong> observa la distribución, los valores centrales y los posibles datos atípicos.</figcaption>
         </figure>
         <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Gráfica posición contra tiempo: curva parabólica ascendente">
+          <svg viewBox="0 0 300 210" aria-label="Diagrama de dispersión">
             <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <path d="M38 170 Q 100 166 150 122 T 268 32" class="curva" fill="none"/>
-            <g class="puntos"><circle cx="38" cy="170" r="4"/><circle cx="150" cy="122" r="4"/><circle cx="268" cy="32" r="4"/></g>
-            <text x="286" y="190" class="axis-text" text-anchor="end">t (s)</text>
-            <text x="14" y="24" class="axis-text">x (m)</text>
+            <path d="M38 170 Q 100 150 268 32" class="curva" fill="none"/>
+            <g class="puntos"><circle cx="60" cy="158" r="4"/><circle cx="95" cy="145" r="4"/><circle cx="130" cy="120" r="4"/><circle cx="170" cy="98" r="4"/><circle cx="210" cy="70" r="4"/><circle cx="250" cy="45" r="4"/></g>
+            <text x="286" y="190" class="axis-text" text-anchor="end">Variable X</text>
+            <text x="14" y="24" class="axis-text">Variable Y</text>
           </svg>
-          <figcaption><strong>x vs t:</strong> una parábola. La pendiente de la tangente en cada punto es la <strong>velocidad instantánea</strong>.</figcaption>
+          <figcaption><strong>Diagrama de dispersión:</strong> ayuda a identificar relaciones, tendencias y valores atípicos.</figcaption>
         </figure>
         <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Gráfica aceleración contra tiempo: línea horizontal constante">
+          <svg viewBox="0 0 300 210" aria-label="Matriz de correlación">
             <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <line x1="38" y1="62" x2="268" y2="62" class="curva"/>
-            <text x="270" y="56" class="axis-text">a = cte.</text>
-            <text x="286" y="190" class="axis-text" text-anchor="end">t (s)</text>
-            <text x="14" y="24" class="axis-text">a (m/s²)</text>
+            <rect x="62" y="42" width="55" height="55" rx="4" fill="#16a34a"/>
+            <rect x="120" y="42" width="55" height="55" rx="4" fill="#86efac"/>
+            <rect x="178" y="42" width="55" height="55" rx="4" fill="#bbf7d0"/>
+            <rect x="62" y="100" width="55" height="55" rx="4" fill="#bbf7d0"/>
+            <rect x="120" y="100" width="55" height="55" rx="4" fill="#16a34a"/>
+            <rect x="178" y="100" width="55" height="55" rx="4" fill="#86efac"/>
+            <text x="286" y="190" class="axis-text" text-anchor="end">Variables</text>
+            <text x="14" y="24" class="axis-text">Correlación</text>
           </svg>
-          <figcaption><strong>a vs t:</strong> una recta horizontal. El área bajo esta curva equivale al <strong>cambio de velocidad</strong> Δv.</figcaption>
+          <figcaption><strong>Matriz de correlación:</strong> resume qué variables se relacionan y en qué dirección.</figcaption>
         </figure>
       </div>
     </section>
@@ -132,51 +141,51 @@
     <!-- ======================= REFERENCIAS ======================= -->
     <section class="seccion seccion--clara" id="referencias">
       <div class="seccion__cabecera">
-        <span class="eyebrow">Imágenes de referencia</span>
-        <h2>Situaciones del MRUV</h2>
-        <p>Observa cómo cambia la separación entre posiciones sucesivas: en el MRUV los intervalos crecen (o decrecen) de forma regular porque la rapidez no es constante.</p>
+        <span class="eyebrow">Flujo de trabajo</span>
+        <h2>Situaciones de análisis</h2>
+        <p>Reconoce los datos disponibles, evalúa su calidad y elige el método adecuado para responder una pregunta.</p>
       </div>
       <div class="imagenes-grid">
         <figure class="imagen-card">
-          <img src="assets/mruv-auto.svg" alt="Ilustración de un automóvil acelerando hacia la derecha con posiciones fantasma cada vez más separadas" />
+          <div style="min-height:180px;display:grid;place-items:center;font-size:4rem;background:#ecfdf5">📥</div>
           <figcaption>
-            <h3>Auto que acelera</h3>
-            <p>Si <em>a</em> tiene el mismo sentido que <em>v</em>, el vehículo gana rapidez: las marcas de posición se separan cada vez más.</p>
+            <h3>Carga de datos</h3>
+            <p>Importa archivos CSV o Excel y revisa columnas, tipos, dimensiones y primeras filas.</p>
           </figcaption>
         </figure>
         <figure class="imagen-card">
-          <img src="assets/mruv-caida.svg" alt="Ilustración de una pelota en caída libre con posiciones sucesivas cada vez más distantes" />
+          <div style="min-height:180px;display:grid;place-items:center;font-size:4rem;background:#ecfdf5">🧹</div>
           <figcaption>
-            <h3>Caída libre</h3>
-            <p>Con <em>a = −g ≈ −9,8 m/s²</em> (o −10 m/s² aproximado) y parte del reposo: <em>v = −g·t</em> y <em>y = y₀ − ½·g·t²</em>.</p>
+            <h3>Limpieza</h3>
+            <p>Gestiona valores faltantes, duplicados, formatos inconsistentes y datos atípicos.</p>
           </figcaption>
         </figure>
         <figure class="imagen-card">
-          <img src="assets/mruv-plano.svg" alt="Ilustración de un bloque deslizándose por un plano inclinado con aceleración constante" />
+          <div style="min-height:180px;display:grid;place-items:center;font-size:4rem;background:#ecfdf5">📊</div>
           <figcaption>
-            <h3>Plano inclinado</h3>
-            <p>Sin rozamiento, la aceleración del bloque es constante e igual a <em>g·sen(θ)</em>: otro caso típico de MRUV.</p>
+            <h3>Análisis y modelado</h3>
+            <p>Explora variables, crea visualizaciones y compara regresiones o Random Forest.</p>
           </figcaption>
         </figure>
       </div>
       <aside class="nota">
-        <strong>Convención de signos:</strong> elige una dirección positiva y mantenla en todo el problema. Velocidad negativa no significa “ir más lento”, sino “moverse en sentido negativo”.
+        <strong>Principio clave:</strong> una visualización o modelo solo es válido si las variables, el preprocesamiento y las unidades son consistentes.
       </aside>
     </section>
 
     <!-- ======================= LABORATORIO ======================= -->
     <section class="seccion seccion--lab" id="laboratorio">
       <div class="seccion__cabecera">
-        <span class="eyebrow">Resolutor paso a paso</span>
-        <h2>Laboratorio de ejercicios</h2>
-        <p>Ingresa los valores del problema. La imagen se dibuja con tus datos y el resolutor muestra cada fórmula ya sustituida, el resultado y su interpretación física.</p>
+        <span class="eyebrow">Laboratorio estadístico</span>
+        <h2>Explora un conjunto de datos</h2>
+        <p>Introduce variables estadísticas y observa la media, mediana, desviación y rango.</p>
       </div>
 
       <div class="lab">
         <form class="lab__panel" id="labForm" novalidate>
           <div class="segmented" role="tablist" aria-label="Tipo de ejercicio">
-            <button type="button" class="segmented__btn activo" data-modo="vertical" role="tab" aria-selected="true">Caída / lanzamiento vertical</button>
-            <button type="button" class="segmented__btn" data-modo="horizontal" role="tab" aria-selected="false">Auto con aceleración</button>
+            <button type="button" class="segmented__btn activo" data-modo="descripcion" role="tab" aria-selected="true">Estadística descriptiva</button>
+            <button type="button" class="segmented__btn" data-modo="correlacion" role="tab" aria-selected="false">Correlación</button>
           </div>
 
           <p class="lab__descripcion" id="labDescripcion"></p>
@@ -208,8 +217,8 @@
         <span class="eyebrow">Aprende a tu ritmo</span>
         <h2>Investiga un tema</h2>
         <p>
-          Elige un tema del catálogo. Verás su <strong>concepto</strong>, sus <strong>fórmulas</strong> y
-          <strong>casos reales</strong>. Puedes cambiar los valores o reescribir la fórmula y la gráfica se
+          Elige un tema del catálogo. Verás su <strong>concepto</strong>, sus <strong>métodos</strong> y
+          <strong>casos reales</strong>. Puedes cambiar los valores o reescribir la expresión y la gráfica se
           actualiza al instante.
         </p>
       </div>
@@ -223,13 +232,13 @@
                 <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path d="M16 16l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <input id="invBuscar" type="search" placeholder="Ej.: caída libre, Ohm, ondas…" autocomplete="off" />
+              <input id="invBuscar" type="search" placeholder="Ej.: CSV, regresión, Random Forest…" autocomplete="off" />
             </div>
           </div>
           <div class="catalogo__filtros" id="invFiltros" aria-label="Filtrar por categoría"></div>
           <div class="catalogo__lista" id="invLista"></div>
           <p class="catalogo__vacio" id="invVacio" hidden>No hay temas que coincidan. Prueba con otra palabra.</p>
-          <p class="catalogo__pie">22 temas de física y matemáticas · elige uno para empezar</p>
+          <p class="catalogo__pie">Temario de ciencia de datos · elige uno para empezar</p>
         </aside>
 
         <div class="investiga__contenido" id="invContenido" aria-live="polite"></div>
@@ -241,7 +250,7 @@
       <div class="seccion__cabecera">
         <span class="eyebrow">Pon a prueba lo aprendido</span>
         <h2>Cuestionario</h2>
-        <p>Selecciona una opción y pulsa <strong>Comprobar</strong>. Verás al instante si es correcta y la justificación física.</p>
+        <p>Selecciona una opción y pulsa <strong>Comprobar</strong>. Verás al instante si es correcta y la justificación conceptual.</p>
       </div>
 
       <div class="quiz" id="quiz">
@@ -271,7 +280,7 @@
   </main>
 
   <!-- ======================= TUTOR CHAT ======================= -->
-  <button type="button" class="chat-toggle" id="chatToggle" aria-label="Abrir tutor de física" aria-expanded="false" aria-controls="chatPanel">
+  <button type="button" class="chat-toggle" id="chatToggle" aria-label="Abrir tutor de ciencia de datos" aria-expanded="false" aria-controls="chatPanel">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" fill="currentColor"/>
       <path d="M7 9h10M7 13h7" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
@@ -279,11 +288,11 @@
     <span class="chat-toggle__badge" aria-hidden="true">?</span>
   </button>
 
-  <section class="chat" id="chatPanel" aria-label="Tutor de MRUV" hidden>
+  <section class="chat" id="chatPanel" aria-label="Tutor de ciencia de datos" hidden>
     <header class="chat__header">
       <div class="chat__avatar" aria-hidden="true">ƒ</div>
       <div class="chat__titulo">
-        <h2>Tutor de MRUV</h2>
+        <h2>Tutor de Ciencia de datos</h2>
         <p>Tutor local · usa tus datos</p>
       </div>
       <button type="button" class="chat__voz" id="chatVoz" aria-label="Desactivar respuestas por voz" aria-pressed="true" title="Desactivar respuestas por voz">
@@ -302,11 +311,11 @@
     <div class="chat__mensajes" id="chatMensajes" role="log" aria-live="polite" aria-relevant="additions"></div>
 
     <div class="chat__sugerencias" id="chatSugerencias" aria-label="Preguntas sugeridas">
-      <button type="button" data-chat="¿Qué fórmula uso?">¿Qué fórmula uso?</button>
+      <button type="button" data-chat="¿Cómo limpio los datos?">¿Cómo limpio los datos?</button>
       <button type="button" data-chat="Explica este ejercicio">Explica este ejercicio</button>
       <button type="button" data-chat="Explica mi laboratorio">Explica mi laboratorio</button>
       <button type="button" data-chat="Explícame el tema que estoy investigando">Explícame el tema que investigo</button>
-      <button type="button" data-chat="¿Por qué en el punto más alto no es cero la aceleración?">¿Aceleración en el punto más alto?</button>
+      <button type="button" data-chat="¿Cuándo uso Random Forest?">¿Cuándo uso Random Forest?</button>
       <button type="button" data-chat="¿Por qué no funciona el micrófono?">El micrófono no funciona</button>
     </div>
 
@@ -317,7 +326,7 @@
           <path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
-      <label class="sr-only" for="chatInput">Escribe tu pregunta sobre MRUV</label>
+      <label class="sr-only" for="chatInput">Escribe tu pregunta sobre ciencia de datos</label>
       <input id="chatInput" type="text" placeholder="Escribe o pulsa el micrófono…" autocomplete="off" spellcheck="true" />
       <button type="submit" aria-label="Enviar mensaje">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z" fill="currentColor"/></svg>
@@ -327,7 +336,7 @@
   </section>
 
   <footer>
-    <p>MRUV · Cuestionario educativo con respuestas justificadas. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar. El tutor está abajo a la derecha: puedes escribirle o preguntarle por voz con el micrófono.</p>
+    <p>Ciencia de datos · Plataforma educativa interactiva. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar. El tutor está abajo a la derecha.</p>
   </footer>
 
   <script src="script.js"></script>
