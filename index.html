@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Plataforma educativa interactiva de ciencia de datos: CSV, Excel, DataFrames, estadística, análisis, visualización y modelos." />
-  <title>Ciencia de datos · Aprendizaje interactivo</title>
+  <meta name="description" content="Teoría básica de ciencia de datos." />
+  <title>Ciencia de datos · Teoría</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,94 +12,53 @@
   <header class="hero">
     <div class="hero__inner">
       <span class="badge">Datos · Estadística · Inteligencia artificial</span>
-      <h1>Aprende <span>Ciencia de datos</span></h1>
+      <h1>Teoría de <span>Ciencia de datos</span></h1>
       <p class="hero__lead">
-        Explora el ciclo completo del análisis de datos: carga archivos, limpia variables,
-        analiza patrones, crea gráficos y desarrolla modelos predictivos.
+        Conoce los conceptos fundamentales para cargar, limpiar, analizar y modelar datos.
       </p>
-      <div class="hero__chips" aria-label="Temas del cuestionario">
+      <div class="hero__chips" aria-label="Temas de teoría">
         <span class="chip">CSV y Excel</span>
         <span class="chip">DataFrames</span>
         <span class="chip">Tipos de variables</span>
         <span class="chip">Limpieza de datos</span>
-        <span class="chip">Análisis estadístico</span>
-        <span class="chip">Regresión y matrices</span>
+        <span class="chip">Estadística</span>
+        <span class="chip">Visualización</span>
+        <span class="chip">Regresión</span>
         <span class="chip">Random Forest</span>
-        <span class="chip">Investigación guiada</span>
-        <span class="chip">Consulta por voz</span>
       </div>
-      <a class="hero__cta" href="#cuestionario">Empezar cuestionario <span aria-hidden="true">↓</span></a>
-    </div>
-    <div class="hero__art" aria-hidden="true">
-      <svg viewBox="0 0 420 300" role="presentation">
-        <defs>
-          <linearGradient id="heroLine" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0" stop-color="#86efac" />
-            <stop offset="1" stop-color="#22c55e" />
-          </linearGradient>
-        </defs>
-        <g stroke="#cbd5e1" stroke-width="1.5">
-          <line x1="46" y1="30" x2="46" y2="252" />
-          <line x1="46" y1="252" x2="392" y2="252" />
-          <line x1="46" y1="181" x2="392" y2="181" stroke-dasharray="4 6" />
-          <line x1="46" y1="110" x2="392" y2="110" stroke-dasharray="4 6" />
-          <line x1="46" y1="39" x2="392" y2="39" stroke-dasharray="4 6" />
-        </g>
-        <path d="M46 252 L370 46" stroke="url(#heroLine)" stroke-width="5" fill="none" stroke-linecap="round" />
-        <g fill="#16a34a">
-          <circle cx="130" cy="196" r="5" />
-          <circle cx="214" cy="139" r="5" />
-          <circle cx="298" cy="83" r="5" />
-          <circle cx="370" cy="46" r="6" />
-        </g>
-        <text x="20" y="40" class="hero__svg-label">v</text>
-        <text x="380" y="275" class="hero__svg-label">t</text>
-      </svg>
+      <a class="hero__cta" href="#teoria">Ver teoría <span aria-hidden="true">↓</span></a>
     </div>
   </header>
 
-  <!-- ======================= PESTAÑAS ======================= -->
-  <nav class="tabs" id="tabs" aria-label="Menú de secciones">
-    <div class="tabs__inner">
-      <span class="tabs__titulo">Menú</span>
-      <a class="tabs__link activo" href="#teoria">Teoría</a>
-      <a class="tabs__link" href="#referencias">Situaciones</a>
-      <a class="tabs__link" href="#laboratorio">Laboratorio</a>
-      <a class="tabs__link" href="#investigacion">Investigación <span class="tabs__badge">Nuevo</span></a>
-      <a class="tabs__link" href="#cuestionario">Cuestionario</a>
-    </div>
-  </nav>
-
   <main>
-    <!-- ======================= TEORÍA ======================= -->
     <section class="seccion" id="teoria">
       <div class="seccion__cabecera">
         <span class="eyebrow">Fundamentos</span>
-        <h2>Las ideas clave</h2>
-        <p>Un proyecto de ciencia de datos comienza con datos confiables y termina con <strong>hallazgos explicables</strong> y modelos útiles.</p>
+        <h2>Conceptos esenciales</h2>
+        <p>La ciencia de datos transforma datos en información mediante procesos reproducibles y métodos estadísticos.</p>
       </div>
 
       <div class="formula-grid">
         <article class="formula-card">
-          <h3>Variables</h3>
-          <p class="formula">Numéricas · Categóricas · Fechas</p>
-          <p>El tipo de cada variable determina qué estadísticas, limpiezas y gráficos son apropiados.</p>
+          <h3>Datos y variables</h3>
+          <p class="formula">Filas = registros · Columnas = variables</p>
+          <p>Las variables pueden ser numéricas, categóricas, binarias, de texto o temporales. Los archivos CSV y Excel se organizan normalmente en DataFrames.</p>
         </article>
         <article class="formula-card">
-          <h3>Estadística</h3>
+          <h3>Estadística descriptiva</h3>
           <p class="formula">Media · Mediana · Desviación</p>
-          <p>Resume tendencias y dispersión antes de avanzar a modelos más complejos.</p>
+          <p>Resume el comportamiento central y la dispersión. Los percentiles ayudan a comparar observaciones y detectar valores extremos.</p>
         </article>
         <article class="formula-card">
-          <h3>Modelado</h3>
+          <h3>Modelado predictivo</h3>
           <p class="formula">Entrenamiento · Validación · Predicción</p>
-          <p>Divide datos, evita fugas de información y compara el rendimiento con métricas adecuadas.</p>
+          <p>Los datos se dividen para ajustar un modelo y evaluar su capacidad de generalizar a observaciones no vistas.</p>
         </article>
       </div>
 
       <div class="graficas">
         <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Histograma de distribución">
+          <svg viewBox="0 0 300 210" aria-label="Histograma">
             <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
             <rect x="55" y="125" width="24" height="45" fill="#86efac"/>
             <rect x="82" y="95" width="24" height="75" fill="#22c55e"/>
@@ -109,17 +68,21 @@
             <text x="286" y="190" class="axis-text" text-anchor="end">Valor</text>
             <text x="14" y="24" class="axis-text">Frecuencia</text>
           </svg>
-          <figcaption><strong>Histograma:</strong> observa la distribución, los valores centrales y los posibles datos atípicos.</figcaption>
+          <figcaption><strong>Histograma:</strong> muestra la distribución y permite detectar la concentración de datos y valores atípicos.</figcaption>
         </figure>
         <figure class="grafica-card">
           <svg viewBox="0 0 300 210" aria-label="Diagrama de dispersión">
             <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <path d="M38 170 Q 100 150 268 32" class="curva" fill="none"/>
-            <g class="puntos"><circle cx="60" cy="158" r="4"/><circle cx="95" cy="145" r="4"/><circle cx="130" cy="120" r="4"/><circle cx="170" cy="98" r="4"/><circle cx="210" cy="70" r="4"/><circle cx="250" cy="45" r="4"/></g>
+            <path d="M38 170 Q100 150 268 32" class="curva" fill="none"/>
+            <g class="puntos">
+              <circle cx="60" cy="158" r="4"/><circle cx="95" cy="145" r="4"/>
+              <circle cx="130" cy="120" r="4"/><circle cx="170" cy="98" r="4"/>
+              <circle cx="210" cy="70" r="4"/><circle cx="250" cy="45" r="4"/>
+            </g>
             <text x="286" y="190" class="axis-text" text-anchor="end">Variable X</text>
             <text x="14" y="24" class="axis-text">Variable Y</text>
           </svg>
-          <figcaption><strong>Diagrama de dispersión:</strong> ayuda a identificar relaciones, tendencias y valores atípicos.</figcaption>
+          <figcaption><strong>Dispersión:</strong> representa pares de valores y ayuda a identificar relaciones y tendencias.</figcaption>
         </figure>
         <figure class="grafica-card">
           <svg viewBox="0 0 300 210" aria-label="Matriz de correlación">
@@ -133,215 +96,36 @@
             <text x="286" y="190" class="axis-text" text-anchor="end">Variables</text>
             <text x="14" y="24" class="axis-text">Correlación</text>
           </svg>
-          <figcaption><strong>Matriz de correlación:</strong> resume qué variables se relacionan y en qué dirección.</figcaption>
+          <figcaption><strong>Matriz de correlación:</strong> resume la relación lineal entre varias variables numéricas.</figcaption>
         </figure>
       </div>
-    </section>
 
-    <!-- ======================= REFERENCIAS ======================= -->
-    <section class="seccion seccion--clara" id="referencias">
-      <div class="seccion__cabecera">
-        <span class="eyebrow">Flujo de trabajo</span>
-        <h2>Situaciones de análisis</h2>
-        <p>Reconoce los datos disponibles, evalúa su calidad y elige el método adecuado para responder una pregunta.</p>
-      </div>
-      <div class="imagenes-grid">
-        <figure class="imagen-card">
-          <div style="min-height:180px;display:grid;place-items:center;font-size:4rem;background:#ecfdf5">📥</div>
-          <figcaption>
-            <h3>Carga de datos</h3>
-            <p>Importa archivos CSV o Excel y revisa columnas, tipos, dimensiones y primeras filas.</p>
-          </figcaption>
-        </figure>
-        <figure class="imagen-card">
-          <div style="min-height:180px;display:grid;place-items:center;font-size:4rem;background:#ecfdf5">🧹</div>
-          <figcaption>
-            <h3>Limpieza</h3>
-            <p>Gestiona valores faltantes, duplicados, formatos inconsistentes y datos atípicos.</p>
-          </figcaption>
-        </figure>
-        <figure class="imagen-card">
-          <div style="min-height:180px;display:grid;place-items:center;font-size:4rem;background:#ecfdf5">📊</div>
-          <figcaption>
-            <h3>Análisis y modelado</h3>
-            <p>Explora variables, crea visualizaciones y compara regresiones o Random Forest.</p>
-          </figcaption>
-        </figure>
-      </div>
       <aside class="nota">
-        <strong>Principio clave:</strong> una visualización o modelo solo es válido si las variables, el preprocesamiento y las unidades son consistentes.
+        <strong>Principio clave:</strong> antes de analizar o modelar, verifica los tipos de variables, los valores faltantes, los duplicados y los datos atípicos.
       </aside>
-    </section>
 
-    <!-- ======================= LABORATORIO ======================= -->
-    <section class="seccion seccion--lab" id="laboratorio">
-      <div class="seccion__cabecera">
-        <span class="eyebrow">Laboratorio estadístico</span>
-        <h2>Explora un conjunto de datos</h2>
-        <p>Introduce variables estadísticas y observa la media, mediana, desviación y rango.</p>
+      <div class="formula-grid" style="margin-top:1.6rem">
+        <article class="formula-card">
+          <h3>Carga y limpieza</h3>
+          <p>Los datos CSV y Excel deben comprobarse por codificación, separador, nombres de columnas, dimensiones y tipos.</p>
+          <p>La limpieza trata valores faltantes, duplicados, formatos inconsistentes y datos atípicos.</p>
+        </article>
+        <article class="formula-card">
+          <h3>Regresión</h3>
+          <p class="formula">ŷ = b₀ + b₁x₁ + b₂x₂ + …</p>
+          <p>Estima una variable numérica a partir de variables explicativas. Evalúa el error con datos de prueba.</p>
+        </article>
+        <article class="formula-card">
+          <h3>Random Forest</h3>
+          <p class="formula">Predicción = combinación de árboles</p>
+          <p>Random Forest reúne varios árboles aleatorizados para clasificar o predecir valores con menor varianza.</p>
+        </article>
       </div>
-
-      <div class="lab">
-        <form class="lab__panel" id="labForm" novalidate>
-          <div class="segmented" role="tablist" aria-label="Tipo de ejercicio">
-            <button type="button" class="segmented__btn activo" data-modo="descripcion" role="tab" aria-selected="true">Estadística descriptiva</button>
-            <button type="button" class="segmented__btn" data-modo="correlacion" role="tab" aria-selected="false">Correlación</button>
-          </div>
-
-          <p class="lab__descripcion" id="labDescripcion"></p>
-          <div class="campos" id="labCampos"></div>
-
-          <div class="lab__botones">
-            <button type="submit" class="btn btn--primary">Calcular resultado →</button>
-            <button type="button" class="btn btn--ghost" id="labReset">Restablecer</button>
-          </div>
-          <p class="lab__error" id="labError" role="alert" hidden></p>
-        </form>
-
-        <div class="lab__salida" id="labSalida" aria-live="polite">
-          <div class="lab__placeholder">
-            <svg viewBox="0 0 120 120" aria-hidden="true">
-              <circle cx="60" cy="60" r="48" fill="none" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6 7"/>
-              <path d="M38 62 L54 78 L84 44" fill="none" stroke="#16a34a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h3>Tus resultados aparecerán aquí</h3>
-            <p>Completa los datos a la izquierda y pulsa <strong>Calcular resultado</strong> para ver el esquema, las fórmulas y la explicación paso a paso.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= INVESTIGACIÓN ======================= -->
-    <section class="seccion seccion--investiga" id="investigacion">
-      <div class="seccion__cabecera">
-        <span class="eyebrow">Aprende a tu ritmo</span>
-        <h2>Investiga un tema</h2>
-        <p>
-          Elige un tema del catálogo. Verás su <strong>concepto</strong>, sus <strong>métodos</strong> y
-          <strong>casos reales</strong>. Puedes cambiar los valores o reescribir la expresión y la gráfica se
-          actualiza al instante.
-        </p>
-      </div>
-
-      <div class="investiga">
-        <aside class="catalogo" aria-label="Catálogo de temas para investigar">
-          <div class="catalogo__buscador">
-            <label for="invBuscar">Buscar tema</label>
-            <div class="catalogo__input">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
-                <path d="M16 16l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              <input id="invBuscar" type="search" placeholder="Ej.: CSV, regresión, Random Forest…" autocomplete="off" />
-            </div>
-          </div>
-          <div class="catalogo__filtros" id="invFiltros" aria-label="Filtrar por categoría"></div>
-          <div class="catalogo__lista" id="invLista"></div>
-          <p class="catalogo__vacio" id="invVacio" hidden>No hay temas que coincidan. Prueba con otra palabra.</p>
-          <p class="catalogo__pie">Temario de ciencia de datos · elige uno para empezar</p>
-        </aside>
-
-        <div class="investiga__contenido" id="invContenido" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <!-- ======================= CUESTIONARIO ======================= -->
-    <section class="seccion" id="cuestionario">
-      <div class="seccion__cabecera">
-        <span class="eyebrow">Pon a prueba lo aprendido</span>
-        <h2>Cuestionario</h2>
-        <p>Selecciona una opción y pulsa <strong>Comprobar</strong>. Verás al instante si es correcta y la justificación conceptual.</p>
-      </div>
-
-      <div class="quiz" id="quiz">
-        <div class="quiz__barra">
-          <div class="quiz__progreso-texto">
-            <span id="contador">Pregunta 1 de 12</span>
-            <span id="puntuacion">Aciertos: 0</span>
-          </div>
-          <div class="progress" role="progressbar" aria-label="Progreso del cuestionario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
-            <div class="progress__fill" id="progressFill"></div>
-          </div>
-        </div>
-
-        <div id="preguntaContainer" aria-live="polite"></div>
-
-        <div class="quiz__acciones" id="acciones">
-          <button type="button" class="btn btn--ghost" id="btnAnterior" disabled>← Anterior</button>
-          <div class="acciones__derecha">
-            <button type="button" class="btn btn--primary" id="btnComprobar" disabled>Comprobar</button>
-            <button type="button" class="btn btn--primary" id="btnSiguiente" hidden>Siguiente →</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="resultado" id="resultado" hidden></div>
     </section>
   </main>
 
-  <!-- ======================= TUTOR CHAT ======================= -->
-  <button type="button" class="chat-toggle" id="chatToggle" aria-label="Abrir tutor de ciencia de datos" aria-expanded="false" aria-controls="chatPanel">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" fill="currentColor"/>
-      <path d="M7 9h10M7 13h7" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    <span class="chat-toggle__badge" aria-hidden="true">?</span>
-  </button>
-
-  <section class="chat" id="chatPanel" aria-label="Tutor de ciencia de datos" hidden>
-    <header class="chat__header">
-      <div class="chat__avatar" aria-hidden="true">ƒ</div>
-      <div class="chat__titulo">
-        <h2>Tutor de Ciencia de datos</h2>
-        <p>Tutor local · usa tus datos</p>
-      </div>
-      <button type="button" class="chat__voz" id="chatVoz" aria-label="Desactivar respuestas por voz" aria-pressed="true" title="Desactivar respuestas por voz">
-        <svg class="svg-on" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
-          <path d="M16 8a5 5 0 0 1 0 8M18.5 5.5a8.5 8.5 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <svg class="svg-off" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
-          <path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <button type="button" class="chat__cerrar" id="chatCerrar" aria-label="Cerrar chat">×</button>
-    </header>
-
-    <div class="chat__mensajes" id="chatMensajes" role="log" aria-live="polite" aria-relevant="additions"></div>
-
-    <div class="chat__sugerencias" id="chatSugerencias" aria-label="Preguntas sugeridas">
-      <button type="button" data-chat="¿Cómo limpio los datos?">¿Cómo limpio los datos?</button>
-      <button type="button" data-chat="Explica este ejercicio">Explica este ejercicio</button>
-      <button type="button" data-chat="Explica mi laboratorio">Explica mi laboratorio</button>
-      <button type="button" data-chat="Explícame el tema que estoy investigando">Explícame el tema que investigo</button>
-      <button type="button" data-chat="¿Cuándo uso Random Forest?">¿Cuándo uso Random Forest?</button>
-      <button type="button" data-chat="¿Por qué no funciona el micrófono?">El micrófono no funciona</button>
-    </div>
-
-    <form class="chat__form" id="chatForm">
-      <button type="button" class="chat__mic" id="chatMic" aria-label="Preguntar por voz" title="Preguntar por voz">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z" fill="currentColor"/>
-          <path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <label class="sr-only" for="chatInput">Escribe tu pregunta sobre ciencia de datos</label>
-      <input id="chatInput" type="text" placeholder="Escribe o pulsa el micrófono…" autocomplete="off" spellcheck="true" />
-      <button type="submit" aria-label="Enviar mensaje">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z" fill="currentColor"/></svg>
-      </button>
-    </form>
-    <p class="chat__estado-voz" id="chatEstadoVoz" role="status" aria-live="polite" hidden></p>
-  </section>
-
   <footer>
-    <p>Ciencia de datos · Plataforma educativa interactiva. Usa <kbd>1</kbd>–<kbd>4</kbd> para elegir y <kbd>Enter</kbd> para comprobar/avanzar. El tutor está abajo a la derecha.</p>
+    <p>Ciencia de datos · Página de teoría.</p>
   </footer>
-
-  <script src="script.js"></script>
-  <script src="investigacion-temas.js"></script>
-  <script src="investigacion.js"></script>
-  <script src="chatbot.js"></script>
 </body>
 </html>
