@@ -3,129 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Teoría básica de ciencia de datos." />
-  <title>Ciencia de datos · Teoría</title>
+  <meta name="description" content="Curso amigable de ciencia de datos con teoría, ilustraciones y libros y artículos abiertos para consultar." />
+  <title>Curso de Ciencia de datos · Teoría guiada</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero">
+  <header class="hero curso-hero">
     <div class="hero__inner">
-      <span class="badge">Datos · Estadística · Inteligencia artificial</span>
-      <h1>Teoría de <span>Ciencia de datos</span></h1>
+      <span class="badge">Curso abierto · Aprende a tu ritmo</span>
+      <h1>Ciencia de <span>datos</span></h1>
       <p class="hero__lead">
-        Conoce los conceptos fundamentales para cargar, limpiar, analizar y modelar datos.
+        Un recorrido guiado desde la pregunta inicial hasta un análisis o modelo confiable.
+        Abre un módulo, elige un tema y consulta las fuentes abiertas al final de cada lección.
       </p>
-      <div class="hero__chips" aria-label="Temas de teoría">
-        <span class="chip">CSV y Excel</span>
-        <span class="chip">DataFrames</span>
-        <span class="chip">Tipos de variables</span>
-        <span class="chip">Limpieza de datos</span>
-        <span class="chip">Estadística</span>
-        <span class="chip">Visualización</span>
-        <span class="chip">Regresión</span>
-        <span class="chip">Random Forest</span>
+      <div class="curso-hero__meta">
+        <span>8 módulos agrupados</span><span>·</span><span>Teoría, ejemplos e ilustraciones</span><span>·</span><span>Lecturas abiertas</span>
       </div>
-      <a class="hero__cta" href="#teoria">Ver teoría <span aria-hidden="true">↓</span></a>
+      <a class="hero__cta" href="#curso">Explorar el curso <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="hero__art curso-hero__art" aria-hidden="true">
+      <svg viewBox="0 0 420 300" role="presentation">
+        <rect x="36" y="34" width="348" height="232" rx="20" fill="#ffffff" opacity=".1" stroke="#bbf7d0" stroke-width="2"/>
+        <g stroke="#cbd5e1" stroke-width="1" opacity=".55">
+          <path d="M75 220H360M75 220V68"/>
+          <path d="M75 182H360M75 144H360M75 106H360"/>
+        </g>
+        <path d="M88 202 C130 192 147 154 188 160 S250 88 284 113 S334 73 355 78" fill="none" stroke="#86efac" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#22c55e" stroke="#dcfce7" stroke-width="3">
+          <circle cx="88" cy="202" r="7"/><circle cx="145" cy="164" r="7"/><circle cx="204" cy="155" r="7"/>
+          <circle cx="265" cy="103" r="7"/><circle cx="318" cy="94" r="7"/><circle cx="355" cy="78" r="7"/>
+        </g>
+        <rect x="90" y="235" width="24" height="13" rx="4" fill="#a7f3d0"/>
+        <rect x="120" y="225" width="24" height="23" rx="4" fill="#4ade80"/>
+        <rect x="150" y="210" width="24" height="38" rx="4" fill="#22c55e"/>
+        <rect x="180" y="220" width="24" height="28" rx="4" fill="#86efac"/>
+        <text x="75" y="57" fill="#dcfce7" font-size="13" font-family="system-ui">datos → conocimiento</text>
+      </svg>
     </div>
   </header>
 
-  <main>
-    <section class="seccion" id="teoria">
-      <div class="seccion__cabecera">
-        <span class="eyebrow">Fundamentos</span>
-        <h2>Conceptos esenciales</h2>
-        <p>La ciencia de datos transforma datos en información mediante procesos reproducibles y métodos estadísticos.</p>
+  <main class="curso" id="curso">
+    <div class="curso__intro">
+      <div>
+        <span class="eyebrow">Ruta de aprendizaje</span>
+        <h2>Un tema a la vez</h2>
+        <p>Los módulos agrupan las lecciones para que puedas avanzar sin enfrentarte a una lista interminable. Selecciona un tema para ver su explicación, un recurso visual y lecturas para profundizar.</p>
       </div>
+      <div class="curso__tip"><span aria-hidden="true">✦</span><p><strong>Sugerencia:</strong> empieza por el módulo 1 y sigue el orden recomendado. Puedes volver a cualquier tema cuando quieras.</p></div>
+    </div>
 
-      <div class="formula-grid">
-        <article class="formula-card">
-          <h3>Datos y variables</h3>
-          <p class="formula">Filas = registros · Columnas = variables</p>
-          <p>Las variables pueden ser numéricas, categóricas, binarias, de texto o temporales. Los archivos CSV y Excel se organizan normalmente en DataFrames.</p>
-        </article>
-        <article class="formula-card">
-          <h3>Estadística descriptiva</h3>
-          <p class="formula">Media · Mediana · Desviación</p>
-          <p>Resume el comportamiento central y la dispersión. Los percentiles ayudan a comparar observaciones y detectar valores extremos.</p>
-        </article>
-        <article class="formula-card">
-          <h3>Modelado predictivo</h3>
-          <p class="formula">Entrenamiento · Validación · Predicción</p>
-          <p>Los datos se dividen para ajustar un modelo y evaluar su capacidad de generalizar a observaciones no vistas.</p>
-        </article>
-      </div>
-
-      <div class="graficas">
-        <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Histograma">
-            <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <rect x="55" y="125" width="24" height="45" fill="#86efac"/>
-            <rect x="82" y="95" width="24" height="75" fill="#22c55e"/>
-            <rect x="109" y="55" width="24" height="115" fill="#16a34a"/>
-            <rect x="136" y="82" width="24" height="88" fill="#22c55e"/>
-            <rect x="163" y="115" width="24" height="55" fill="#86efac"/>
-            <text x="286" y="190" class="axis-text" text-anchor="end">Valor</text>
-            <text x="14" y="24" class="axis-text">Frecuencia</text>
-          </svg>
-          <figcaption><strong>Histograma:</strong> muestra la distribución y permite detectar la concentración de datos y valores atípicos.</figcaption>
-        </figure>
-        <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Diagrama de dispersión">
-            <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <path d="M38 170 Q100 150 268 32" class="curva" fill="none"/>
-            <g class="puntos">
-              <circle cx="60" cy="158" r="4"/><circle cx="95" cy="145" r="4"/>
-              <circle cx="130" cy="120" r="4"/><circle cx="170" cy="98" r="4"/>
-              <circle cx="210" cy="70" r="4"/><circle cx="250" cy="45" r="4"/>
-            </g>
-            <text x="286" y="190" class="axis-text" text-anchor="end">Variable X</text>
-            <text x="14" y="24" class="axis-text">Variable Y</text>
-          </svg>
-          <figcaption><strong>Dispersión:</strong> representa pares de valores y ayuda a identificar relaciones y tendencias.</figcaption>
-        </figure>
-        <figure class="grafica-card">
-          <svg viewBox="0 0 300 210" aria-label="Matriz de correlación">
-            <g class="ejes"><line x1="38" y1="170" x2="286" y2="170"/><line x1="38" y1="170" x2="38" y2="20"/></g>
-            <rect x="62" y="42" width="55" height="55" rx="4" fill="#16a34a"/>
-            <rect x="120" y="42" width="55" height="55" rx="4" fill="#86efac"/>
-            <rect x="178" y="42" width="55" height="55" rx="4" fill="#bbf7d0"/>
-            <rect x="62" y="100" width="55" height="55" rx="4" fill="#bbf7d0"/>
-            <rect x="120" y="100" width="55" height="55" rx="4" fill="#16a34a"/>
-            <rect x="178" y="100" width="55" height="55" rx="4" fill="#86efac"/>
-            <text x="286" y="190" class="axis-text" text-anchor="end">Variables</text>
-            <text x="14" y="24" class="axis-text">Correlación</text>
-          </svg>
-          <figcaption><strong>Matriz de correlación:</strong> resume la relación lineal entre varias variables numéricas.</figcaption>
-        </figure>
-      </div>
-
-      <aside class="nota">
-        <strong>Principio clave:</strong> antes de analizar o modelar, verifica los tipos de variables, los valores faltantes, los duplicados y los datos atípicos.
+    <div class="curso-layout">
+      <aside class="curso-menu" aria-label="Contenido del curso">
+        <div class="curso-menu__head">
+          <span class="eyebrow">Contenido</span>
+          <p>Elige una lección</p>
+        </div>
+        <nav id="courseNav" class="curso-menu__nav" aria-label="Módulos y temas del curso"></nav>
+        <p class="curso-menu__note">Las lecturas enlazadas son libros, documentación o recursos científicos de acceso abierto.</p>
       </aside>
 
-      <div class="formula-grid" style="margin-top:1.6rem">
-        <article class="formula-card">
-          <h3>Carga y limpieza</h3>
-          <p>Los datos CSV y Excel deben comprobarse por codificación, separador, nombres de columnas, dimensiones y tipos.</p>
-          <p>La limpieza trata valores faltantes, duplicados, formatos inconsistentes y datos atípicos.</p>
-        </article>
-        <article class="formula-card">
-          <h3>Regresión</h3>
-          <p class="formula">ŷ = b₀ + b₁x₁ + b₂x₂ + …</p>
-          <p>Estima una variable numérica a partir de variables explicativas. Evalúa el error con datos de prueba.</p>
-        </article>
-        <article class="formula-card">
-          <h3>Random Forest</h3>
-          <p class="formula">Predicción = combinación de árboles</p>
-          <p>Random Forest reúne varios árboles aleatorizados para clasificar o predecir valores con menor varianza.</p>
-        </article>
-      </div>
-    </section>
+      <article class="leccion" id="lesson" aria-live="polite">
+        <div class="leccion__loading">Cargando la primera lección…</div>
+      </article>
+    </div>
   </main>
 
-  <footer>
-    <p>Ciencia de datos · Página de teoría.</p>
+  <footer class="curso-footer">
+    <p>Ciencia de datos · Curso de teoría con lecturas abiertas.</p>
   </footer>
+  <script src="course.js"></script>
 </body>
 </html>

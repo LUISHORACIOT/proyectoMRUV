@@ -373,7 +373,7 @@
       boton.setAttribute("aria-current", String(boton.dataset.tema === id ? "page" : "false"));
     });
     const moduloDetails = nav.querySelectorAll(".curso-modulo");
-    moduloDetails.forEach((details, i) => { if (i === indexModulo) details.open = true; });
+    moduloDetails.forEach((details, i) => { details.open = i === indexModulo; });
 
     lesson.style.setProperty("--tema", modulo.color);
     lesson.innerHTML = `
