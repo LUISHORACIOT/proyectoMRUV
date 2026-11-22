@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Curso amigable de ciencia de datos con teoría, ilustraciones y libros y artículos abiertos para consultar." />
-  <title>Curso de Ciencia de datos · Teoría guiada</title>
+  <meta name="description" content="Malla de cursos formativos. Explora Ciencia de datos y próximos cursos de programación, estadística e investigación." />
+  <title>Malla de cursos · Formación abierta</title>
   <link rel="icon" href="data:," />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20261122-malla" />
 </head>
 <body>
   <header class="hero curso-hero">
     <div class="hero__inner">
-      <span class="badge">Curso abierto · Aprende a tu ritmo</span>
-      <h1>Ciencia de <span>datos</span></h1>
+      <span class="badge">Rutas de aprendizaje · Aprende a tu ritmo</span>
+      <h1>Malla de <span>cursos</span></h1>
       <p class="hero__lead">
-        Un recorrido guiado desde la pregunta inicial hasta un análisis o modelo confiable.
-        Abre un módulo, elige un tema y consulta las fuentes abiertas al final de cada lección.
+        Explora cursos organizados por área. Empieza por Ciencia de datos y vuelve a la Malla
+        cuando quieras descubrir nuevas rutas formativas.
       </p>
       <div class="curso-hero__meta">
-        <span>8 módulos agrupados</span><span>·</span><span>Teoría, ejemplos e ilustraciones</span><span>·</span><span>Lecturas abiertas</span>
+        <span>Varios cursos</span><span>·</span><span>Rutas independientes</span><span>·</span><span>Lecturas abiertas</span>
       </div>
-      <a class="hero__cta" href="#curso">Explorar el curso <span aria-hidden="true">↓</span></a>
+      <a class="hero__cta" href="#malla">Explorar la Malla <span aria-hidden="true">↓</span></a>
     </div>
     <div class="hero__art curso-hero__art" aria-hidden="true">
       <svg viewBox="0 0 420 300" role="presentation">
@@ -43,10 +43,21 @@
     </div>
   </header>
 
-  <main class="curso" id="curso">
+  <main>
+    <section class="malla" id="malla">
+      <div class="malla__intro">
+        <span class="eyebrow">Malla académica</span>
+        <h2>Elige tu próximo curso</h2>
+        <p>Cada tarjeta representa un curso independiente. Ciencia de datos ya está disponible; los demás se irán desarrollando con su propio contenido.</p>
+      </div>
+      <div class="malla__grid" id="courseCatalog" aria-label="Cursos de la Malla"></div>
+    </section>
+
+    <section class="curso" id="curso" hidden>
     <div class="curso__intro">
       <div>
-        <span class="eyebrow">Ruta de aprendizaje</span>
+        <button type="button" class="malla__volver" id="backToMalla">← Volver a Malla</button>
+        <span class="eyebrow">Curso · Ciencia de datos</span>
         <h2>Un tema a la vez</h2>
         <p>Los módulos agrupan las lecciones para que puedas avanzar sin enfrentarte a una lista interminable. Selecciona un tema para ver su explicación, un recurso visual y lecturas para profundizar.</p>
       </div>
@@ -67,6 +78,7 @@
         <div class="leccion__loading">Cargando la primera lección…</div>
       </article>
     </div>
+    </section>
   </main>
 
   <footer class="curso-footer">

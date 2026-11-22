@@ -265,14 +265,69 @@
     }
   ];
 
+  const catalog = document.getElementById("courseCatalog");
+  const mallaView = document.getElementById("malla");
+  const courseView = document.getElementById("curso");
+  const backToMalla = document.getElementById("backToMalla");
   const nav = document.getElementById("courseNav");
   const lesson = document.getElementById("lesson");
   const topicIndex = new Map();
   let activeTopicId = "que-es-ciencia-datos";
 
+  const cursos = [
+    { titulo: "Ciencia de datos", categoria: "Datos e inteligencia artificial", icono: "▥", color: "#0f766e", disponible: true, descripcion: "Explora datos, estadística, visualización y modelos predictivos mediante una ruta guiada con fuentes abiertas." },
+    { titulo: "Programación con Python", categoria: "Programación", icono: "⌘", color: "#2563eb", descripcion: "Aprende lógica, estructuras de datos, funciones y automatización con Python." },
+    { titulo: "Estadística y probabilidad", categoria: "Matemáticas", icono: "∑", color: "#7c3aed", descripcion: "Estudia variabilidad, probabilidad, muestreo e inferencia para razonar con incertidumbre." },
+    { titulo: "Bases de datos y SQL", categoria: "Tecnología", icono: "▤", color: "#d97706", descripcion: "Diseña modelos relacionales y consulta información con SQL." },
+    { titulo: "Visualización de datos", categoria: "Comunicación", icono: "▦", color: "#db2777", descripcion: "Elige gráficos, diseña tableros y comunica hallazgos con claridad." },
+    { titulo: "Aprendizaje automático", categoria: "Inteligencia artificial", icono: "✧", color: "#0891b2", descripcion: "Conoce algoritmos, entrenamiento, validación y evaluación de modelos." },
+    { titulo: "Investigación científica y redacción", categoria: "Investigación", icono: "✎", color: "#be123c", descripcion: "Formula preguntas, organiza evidencia y redacta informes con rigor y fuentes citadas." }
+  ];
+
   modulos.forEach(modulo => modulo.temas.forEach((tema, index) => {
     topicIndex.set(tema.id, { modulo, tema, index });
   }));
+
+  function dibujarMalla() {
+    catalog.innerHTML = cursos.map(curso => `
+      <article class="malla-card${curso.disponible ? " malla-card--disponible" : " malla-card--proximo"}" style="--tema:${curso.color}">
+        <div class="malla-card__cabecera">
+          <span class="malla-card__icono" aria-hidden="true">${curso.icono}</span>
+          <span class="malla-card__estado">${curso.disponible ? "Disponible" : "Próximamente"}</span>
+        </div>
+        <span class="malla-card__categoria">${curso.categoria}</span>
+        <h3>${curso.titulo}</h3>
+        <p>${curso.descripcion}</p>
+        ${curso.disponible
+          ? `<button type="button" class="malla-card__accion" data-abrir-curso="ciencia-de-datos">Entrar al curso <span aria-hidden="true">→</span></button>`
+          : `<span class="malla-card__nota">Este curso tendrá su propia ruta de aprendizaje.</span>`}
+      </article>`).join("");
+    catalog.querySelectorAll("[data-abrir-curso]").forEach(boton => {
+      boton.addEventListener("click", () => mostrarCurso(true));
+    });
+  }
+
+  function mostrarMalla(actualizarHistorial = true) {
+    mallaView.hidden = false;
+    courseView.hidden = true;
+    document.title = "Malla de cursos · Formación abierta";
+    if (actualizarHistorial) window.history.pushState(null, "", "#malla");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function mostrarCurso(actualizarHistorial = true) {
+    mallaView.hidden = true;
+    courseView.hidden = false;
+    document.title = "Ciencia de datos · Malla de cursos";
+    if (actualizarHistorial) window.history.pushState(null, "", "#ciencia-de-datos");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  backToMalla.addEventListener("click", () => mostrarMalla());
+  window.addEventListener("popstate", () => {
+    if (window.location.hash === "#ciencia-de-datos") mostrarCurso(false);
+    else mostrarMalla(false);
+  });
 
   function dibujar(modulo, tipo) {
     const c = modulo.color;
@@ -395,6 +450,9 @@
     });
   }
 
+  dibujarMalla();
   dibujarMenu();
   mostrarTema(activeTopicId);
+  if (window.location.hash === "#ciencia-de-datos") mostrarCurso(false);
+  else mostrarMalla(false);
 })();
