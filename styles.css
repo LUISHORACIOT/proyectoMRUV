@@ -851,6 +851,25 @@ kbd {
 
 /* ============ Responsive ============ */
 @media (max-width: 900px) {
+  .tabs {
+    position: sticky;
+    top: 0;
+    right: auto;
+    width: auto;
+    transform: none;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+  }
+  .tabs__inner {
+    flex-direction: row;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: .55rem 1.5rem;
+    overflow-x: auto;
+  }
+  .tabs__titulo { display: none; }
+  .tabs__link { width: auto; }
   .hero { grid-template-columns: 1fr; padding-top: 3.5rem; }
   .hero__art { max-width: 420px; }
   .formula-grid, .graficas, .imagenes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -874,31 +893,43 @@ kbd {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
 /* ============ Pestañas de navegación ============ */
-section[id] { scroll-margin-top: 88px; }
+section[id] { scroll-margin-top: 24px; }
 
 .tabs {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 50%;
+  right: 16px;
   z-index: 50;
+  width: 170px;
+  transform: translateY(-50%);
   background: rgba(255, 255, 255, .88);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 .tabs__inner {
   display: flex;
+  flex-direction: column;
   gap: .25rem;
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: .55rem 1.5rem;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  padding: .65rem;
+}
+
+.tabs__titulo {
+  padding: .2rem .65rem .45rem;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 
 .tabs__link {
   display: inline-flex;
   align-items: center;
+  width: 100%;
   gap: .4rem;
   flex: 0 0 auto;
   padding: .5rem .85rem;
@@ -923,6 +954,10 @@ section[id] { scroll-margin-top: 88px; }
   font-weight: 800;
   letter-spacing: .04em;
   text-transform: uppercase;
+}
+
+@media (min-width: 901px) {
+  body { padding-right: 202px; }
 }
 
 /* ============ Investigación ============ */
