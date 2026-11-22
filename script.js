@@ -557,8 +557,8 @@ renderPregunta();
       <text x="${Math.min(px(desplazamientos[0]), 320).toFixed(1)}" y="140" fill="#475569" font-size="13" font-family="system-ui">v₀ = ${fmt(r.v0)} m/s</text>
       <text x="${Math.min(px(desplazamientos[5]), 320).toFixed(1)}" y="140" fill="#c2410c" font-size="13" font-family="system-ui" font-weight="700">v = ${fmt(r.v)} m/s</text>
       <line x1="${px(desplazamientos[0]).toFixed(1)}" y1="272" x2="${px(desplazamientos[5]).toFixed(1)}" y2="272"
-            stroke="#4f46e5" stroke-width="3" marker-end="url(#labFlechaH)"/>
-      <text x="205" y="295" fill="#3730a3" font-size="13" font-family="system-ui" text-anchor="middle">Δx = ${fmt(r.dx)} m</text>
+            stroke="#16a34a" stroke-width="3" marker-end="url(#labFlechaH)"/>
+      <text x="205" y="295" fill="#166534" font-size="13" font-family="system-ui" text-anchor="middle">Δx = ${fmt(r.dx)} m</text>
     </svg>`;
   }
 

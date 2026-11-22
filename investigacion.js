@@ -713,8 +713,8 @@
       <defs>
         <clipPath id="${idClip}"><rect x="${x0}" y="${y0}" width="${ancho}" height="${alto}"/></clipPath>
         <linearGradient id="${idGrad}" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#06b6d4"/>
-          <stop offset="1" stop-color="#4f46e5"/>
+          <stop offset="0" stop-color="#22c55e"/>
+          <stop offset="1" stop-color="#16a34a"/>
         </linearGradient>
       </defs>
       <rect width="${W}" height="${H}" rx="12" fill="#fbfcfe"/>
