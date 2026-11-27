@@ -1485,6 +1485,41 @@ section[id] { scroll-margin-top: 24px; }
 .malla-card__accion:hover { filter: brightness(.92); }
 .malla-card__nota { padding-top: .55rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .75rem; }
 
+.silabus {
+  margin-top: 3rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: #f8fafc;
+}
+
+.silabus__intro { max-width: 760px; margin-bottom: 1.4rem; }
+.silabus__intro h2 { margin: .25rem 0 .45rem; font-size: clamp(1.6rem, 2.5vw, 2rem); }
+.silabus__intro p, .silabus__resultado-descripcion { color: var(--muted); line-height: 1.65; }
+.silabus__panel { display: grid; max-width: 820px; gap: 1rem; }
+.silabus__file { display: flex; align-items: center; gap: .9rem; padding: 1rem; border: 1px dashed #94a3b8; border-radius: 13px; background: #fff; cursor: pointer; }
+.silabus__file:focus-within { outline: 3px solid #99f6e4; outline-offset: 2px; }
+.silabus__file-icono { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border-radius: 12px; background: #ccfbf1; color: #0f766e; font-size: 1.5rem; font-weight: 800; }
+.silabus__file strong, .silabus__file small { display: block; }
+.silabus__file small { margin-top: .2rem; color: var(--muted); }
+.silabus__file input { max-width: 100%; margin-left: auto; font: inherit; }
+.silabus__archivo, .silabus__estado { margin: 0; color: var(--muted); font-size: .9rem; }
+.silabus__consentimiento { display: flex; align-items: flex-start; gap: .65rem; max-width: 760px; color: #334155; font-size: .88rem; line-height: 1.55; }
+.silabus__consentimiento input { width: 1rem; height: 1rem; flex: 0 0 auto; margin-top: .2rem; accent-color: #0f766e; }
+.silabus__panel .btn { justify-self: start; }
+.silabus__estado--error { color: #b91c1c; }
+.silabus__resultado { margin-top: 2rem; padding: clamp(1rem, 2.5vw, 1.6rem); border: 1px solid var(--border); border-radius: 16px; background: #fff; }
+.silabus__resultado-titulo { margin-bottom: .45rem; font-size: clamp(1.35rem, 2.5vw, 1.8rem); }
+.silabus__resultado h3 { margin: 1.5rem 0 .65rem; }
+.silabus__resultado ul { padding-left: 1.3rem; color: #334155; line-height: 1.65; }
+.silabus__modulo { margin-top: .8rem; padding: 1rem; border: 1px solid var(--border); border-radius: 12px; background: #f8fafc; }
+.silabus__modulo h4 { margin-bottom: .45rem; }
+.silabus__modulo > p { color: var(--muted); }
+.silabus__leccion { margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+.silabus__leccion h5 { margin-bottom: .35rem; font-size: .98rem; }
+.silabus__leccion p { margin-bottom: .45rem; line-height: 1.6; }
+.silabus__aviso { margin: 1rem 0; color: #92400e; font-size: .9rem; }
+
 .malla__volver {
   display: block;
   margin: 0 0 1.1rem;

@@ -6,7 +6,7 @@
   <meta name="description" content="Malla de cursos formativos. Explora Ciencia de datos y próximos cursos de programación, estadística e investigación." />
   <title>Malla de cursos · Formación abierta</title>
   <link rel="icon" href="data:," />
-  <link rel="stylesheet" href="styles.css?v=20261122-regresion" />
+  <link rel="stylesheet" href="styles.css?v=20261127-carga-silabus" />
 </head>
 <body>
   <header class="hero curso-hero">
@@ -51,6 +51,29 @@
         <p>Cada tarjeta representa un curso independiente. Ciencia de datos ya está disponible; los demás se irán desarrollando con su propio contenido.</p>
       </div>
       <div class="malla__grid" id="courseCatalog" aria-label="Cursos de la Malla"></div>
+
+        <section class="silabus" id="carga-silabus" aria-labelledby="silabusTitulo">
+          <div class="silabus__intro">
+            <span class="eyebrow">Crea una ruta formativa</span>
+            <h2 id="silabusTitulo">Carga de silabus</h2>
+            <p>Sube un documento y genera una propuesta de curso, módulos y lecciones basada en su contenido.</p>
+          </div>
+          <form class="silabus__panel" id="silabusForm">
+            <label class="silabus__file" for="silabusArchivo">
+              <span class="silabus__file-icono" aria-hidden="true">↑</span>
+              <span><strong>Selecciona un documento</strong><small>PDF, DOCX, TXT o MD · máximo 10 MB</small></span>
+              <input id="silabusArchivo" name="archivo" type="file" accept=".pdf,.docx,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown" required>
+            </label>
+            <p class="silabus__archivo" id="silabusNombre">Ningún archivo seleccionado.</p>
+            <label class="silabus__consentimiento">
+              <input id="silabusConsentimiento" type="checkbox" required>
+              <span>Entiendo que el texto extraído del documento se enviará al proveedor de IA configurado para generar el contenido. El archivo no se guarda en el sitio.</span>
+            </label>
+            <button class="btn btn--primary" id="silabusGenerar" type="submit" disabled>Generar contenido</button>
+            <p class="silabus__estado" id="silabusEstado" role="status" aria-live="polite"></p>
+          </form>
+          <div class="silabus__resultado" id="silabusResultado" aria-live="polite" hidden></div>
+        </section>
     </section>
 
     <section class="curso" id="curso" hidden>
@@ -86,5 +109,6 @@
   </footer>
   <script src="course-assessments.js?v=20261122-regresion-2"></script>
   <script src="course.js?v=20261122-regresion-2"></script>
+  <script src="syllabus-upload.js?v=20261127"></script>
 </body>
 </html>
