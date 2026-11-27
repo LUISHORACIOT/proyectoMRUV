@@ -340,13 +340,8 @@ print(f"RMSE: {rmse:.2f} días | R²: {r2:.2f}")`,
   };
 
   const cursos = [
-    { titulo: "Ciencia de datos", categoria: "Datos e inteligencia artificial", icono: "▥", color: "#0f766e", disponible: true, descripcion: "Explora datos, estadística, visualización y modelos predictivos mediante una ruta guiada con fuentes abiertas." },
-    { titulo: "Programación con Python", categoria: "Programación", icono: "⌘", color: "#2563eb", descripcion: "Aprende lógica, estructuras de datos, funciones y automatización con Python." },
-    { titulo: "Estadística y probabilidad", categoria: "Matemáticas", icono: "∑", color: "#7c3aed", descripcion: "Estudia variabilidad, probabilidad, muestreo e inferencia para razonar con incertidumbre." },
-    { titulo: "Bases de datos y SQL", categoria: "Tecnología", icono: "▤", color: "#d97706", descripcion: "Diseña modelos relacionales y consulta información con SQL." },
-    { titulo: "Visualización de datos", categoria: "Comunicación", icono: "▦", color: "#db2777", descripcion: "Elige gráficos, diseña tableros y comunica hallazgos con claridad." },
-    { titulo: "Aprendizaje automático", categoria: "Inteligencia artificial", icono: "✧", color: "#0891b2", descripcion: "Conoce algoritmos, entrenamiento, validación y evaluación de modelos." },
-    { titulo: "Investigación científica y redacción", categoria: "Investigación", icono: "✎", color: "#be123c", descripcion: "Formula preguntas, organiza evidencia y redacta informes con rigor y fuentes citadas." }
+    { id: "ciencia-de-datos", titulo: "Ciencia de datos", categoria: "Datos e inteligencia artificial", icono: "▥", color: "#0f766e", descripcion: "Explora datos, estadística, visualización y modelos predictivos mediante una ruta guiada con fuentes abiertas." },
+    ...(window.catalogCourseData || []).map(curso => ({ ...curso, disponible: true }))
   ];
 
   modulos.forEach(modulo => modulo.temas.forEach((tema, index) => {
@@ -373,20 +368,21 @@ print(f"RMSE: {rmse:.2f} días | R²: {r2:.2f}")`,
 
   function dibujarMalla() {
     catalog.innerHTML = cursos.map(curso => `
-      <article class="malla-card${curso.disponible ? " malla-card--disponible" : " malla-card--proximo"}" style="--tema:${curso.color}">
+      <article class="malla-card malla-card--disponible" style="--tema:${curso.color}">
         <div class="malla-card__cabecera">
           <span class="malla-card__icono" aria-hidden="true">${curso.icono}</span>
-          <span class="malla-card__estado">${curso.disponible ? "Disponible" : "Próximamente"}</span>
+          <span class="malla-card__estado">Disponible</span>
         </div>
         <span class="malla-card__categoria">${curso.categoria}</span>
         <h3>${curso.titulo}</h3>
         <p>${curso.descripcion}</p>
-        ${curso.disponible
-          ? `<button type="button" class="malla-card__accion" data-abrir-curso="ciencia-de-datos">Entrar al curso <span aria-hidden="true">→</span></button>`
-          : `<span class="malla-card__nota">Este curso tendrá su propia ruta de aprendizaje.</span>`}
+        <button type="button" class="malla-card__accion" data-abrir-curso="${curso.id}">Entrar al curso <span aria-hidden="true">→</span></button>
       </article>`).join("");
     catalog.querySelectorAll("[data-abrir-curso]").forEach(boton => {
-      boton.addEventListener("click", () => mostrarCurso(true));
+      boton.addEventListener("click", () => {
+        if (boton.dataset.abrirCurso === "ciencia-de-datos") mostrarCurso(true);
+        else if (typeof window.mostrarCursoCatalogo === "function") window.mostrarCursoCatalogo(boton.dataset.abrirCurso);
+      });
     });
   }
 
@@ -401,6 +397,15 @@ print(f"RMSE: {rmse:.2f} días | R²: {r2:.2f}")`,
   function mostrarCurso(actualizarHistorial = true) {
     mallaView.hidden = true;
     courseView.hidden = false;
+    const intro = courseView.querySelector(".curso__intro");
+    intro.querySelector(".eyebrow").textContent = "Curso · Ciencia de datos";
+    intro.querySelector("h2").textContent = "Un tema a la vez";
+    intro.querySelector("p").textContent = "Los ocho módulos avanzan con el mismo caso práctico de una tienda en línea. Cada módulo incluye código Python, una evaluación de 20 preguntas (20 puntos) y explicaciones después de cada respuesta.";
+    intro.querySelector(".curso__tip p").innerHTML = "<strong>Sugerencia:</strong> empieza por el módulo 1 y sigue el orden recomendado. Puedes volver a cualquier tema cuando quieras.";
+    courseView.querySelector(".curso-menu__note").textContent = "Cada módulo incluye una evaluación de 20 puntos. Las lecturas son abiertas y los enlaces de video llevan a materiales gratuitos en español.";
+    document.querySelector(".curso-footer p").textContent = "Ciencia de datos · Curso de teoría con lecturas abiertas.";
+    dibujarMenu();
+    mostrarTema(activeTopicId);
     document.title = "Ciencia de datos · Malla de cursos";
     if (actualizarHistorial) window.history.pushState(null, "", "#ciencia-de-datos");
     window.scrollTo({ top: 0, behavior: "smooth" });
