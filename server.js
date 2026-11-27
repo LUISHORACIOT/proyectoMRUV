@@ -144,7 +144,7 @@ function permitirSolicitud(ip) {
 async function generarContenido(documento, nombreArchivo) {
   const apiKey = process.env.AI_API_KEY;
   if (!apiKey) {
-    const error = new Error("Falta configurar AI_API_KEY en el servidor.");
+    const error = new Error("Falta configurar AI_API_KEY. Copia .env.example a .env, añade tu clave y reinicia el servidor.");
     error.status = 503;
     throw error;
   }

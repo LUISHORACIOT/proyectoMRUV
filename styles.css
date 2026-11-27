@@ -1836,6 +1836,7 @@ section[id] { scroll-margin-top: 24px; }
 
 .leccion__fuentes .eyebrow { margin-bottom: .2rem; color: var(--tema); }
 .leccion__fuentes h3 { margin-bottom: .35rem; font-size: 1.1rem; }
+.leccion__fuentes h4 { margin: 1rem 0 .45rem; color: var(--text); font-size: .88rem; }
 .leccion__fuentes p { color: var(--muted); font-size: .8rem; }
 .leccion__fuentes ul { display: grid; align-content: start; gap: .55rem; margin: 0; padding: 0; list-style: none; }
 .leccion__fuentes li { display: grid; gap: .12rem; padding: .65rem .75rem; border: 1px solid var(--border); border-radius: 10px; background: #f8fafc; }

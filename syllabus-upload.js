@@ -132,7 +132,20 @@
         },
         body: archivo
       });
-      const datos = await respuesta.json();
+      const textoRespuesta = await respuesta.text();
+      const tipoRespuesta = respuesta.headers.get("content-type") || "";
+      if (!tipoRespuesta.toLowerCase().includes("application/json")) {
+        const detalle = respuesta.status === 404
+          ? "El servidor no reconoce la API de carga. Reinicia el servidor con npm run dev y vuelve a intentarlo."
+          : `El servidor respondió con un formato inesperado (HTTP ${respuesta.status}).`;
+        throw new Error(detalle);
+      }
+      let datos;
+      try {
+        datos = JSON.parse(textoRespuesta);
+      } catch {
+        throw new Error("El servidor devolvió una respuesta JSON no válida. Inténtalo de nuevo.");
+      }
       if (!respuesta.ok) throw new Error(datos.error || "No se pudo procesar el documento.");
       propuestaActual = datos.propuesta;
       renderizarPropuesta(datos.propuesta, datos.textoTruncado);

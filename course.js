@@ -573,6 +573,10 @@ print(f"RMSE: {rmse:.2f} días | R²: {r2:.2f}")`,
       `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${titulo}<span aria-hidden="true"> ↗</span></a><small>Recurso en línea de acceso abierto</small></li>`
     ).join("");
     const material = evaluaciones[modulo.id];
+    const recursosCurso = (window.catalogCourseResources || {})["ciencia-de-datos"] || {};
+    const libros = (recursosCurso.libros || []).map(libro =>
+      `<li><a href="${escaparHTML(libro.url)}" target="_blank" rel="noopener noreferrer">Descargar: ${escaparHTML(libro.titulo)}<span aria-hidden="true"> ↗</span></a><small>${escaparHTML(libro.formato)} · ${escaparHTML(libro.licencia)}</small></li>`
+    ).join("");
     const codigoTema = tema.codigo || material.codigo;
     const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(material.videoQuery)}`;
     const referenciasAPA = material.referenciasAPA.map(referencia => {
@@ -619,7 +623,7 @@ print(f"RMSE: {rmse:.2f} días | R²: {r2:.2f}")`,
         <div><span class="eyebrow">${tema.codigo ? "Python · Ejemplo de regresión" : `Python · Módulo ${modulo.numero}`}</span><h3>${tema.codigo ? "Entrenar una regresión y calcular sus métricas" : "Código para aplicar esta etapa"}</h3></div>
         <pre><code>${escaparHTML(codigoTema)}</code></pre>
       </section>
-      <section class="leccion__fuentes" aria-labelledby="fuentesTitulo"><div><span class="eyebrow">Para seguir leyendo</span><h3 id="fuentesTitulo">Libros, recursos y videos gratuitos</h3><p>Lecturas abiertas, fichas oficiales de normas y videos en español disponibles gratuitamente.</p></div><ul>${bibliografia}<li class="leccion__video"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer">Ver videos gratuitos en español: ${escaparHTML(modulo.titulo)}<span aria-hidden="true"> ↗</span></a><small>Búsqueda de videos públicos en YouTube · acceso gratuito</small></li></ul></section>
+      <section class="leccion__fuentes" aria-labelledby="fuentesTitulo"><div><span class="eyebrow">Para seguir leyendo</span><h3 id="fuentesTitulo">Libros, recursos y videos gratuitos</h3><p>Libros descargables de acceso abierto, recursos de referencia y videos en español para los ejemplos.</p></div><ul>${libros}${bibliografia}<li class="leccion__video"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer">Ver videos gratuitos en español: ${escaparHTML(modulo.titulo)}<span aria-hidden="true"> ↗</span></a><small>Búsqueda de videos públicos en YouTube · acceso gratuito</small></li></ul></section>
       <div class="leccion__navegacion">
         <button type="button" class="leccion__nav-btn" data-destino="${anterior || ""}" ${anterior ? "" : "disabled"}>← Tema anterior</button>
         <span>${posicion + 1} de ${topicIndex.size}</span>
